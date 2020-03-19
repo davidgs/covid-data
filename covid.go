@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"context"
 	"errors"
 	"flag"
 	"fmt"
@@ -11,11 +12,11 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	 "context"
-	 
+
 	"github.com/influxdata/influxdb-client-go"
 	"github.com/smartystreets/scanners/csv"
 )
+
 // Case Struct to hold the data for each line
 type Case struct {
 	Province   string `csv:"Province/State"`
@@ -30,9 +31,11 @@ type Case struct {
 
 // RFC3339FullDate Most common date format in the files
 const RFC3339FullDate = "2006-01-02T15:04:05"
+
 // RFC3339OldDate Another date format used
 const RFC3339OldDate = "1/2/2006 15:04"
-// RFC3339BadDate yet a 3rd format used. 
+
+// RFC3339BadDate yet a 3rd format used.
 const RFC3339BadDate = "1/2/06 15:04"
 
 // streamlined error handling
@@ -42,15 +45,15 @@ func check(e error) {
 	}
 }
 
-// usage 
+// usage
 func usage(e string) {
-		fmt.Println("\nUsage:\n")
-		fmt.Println("\t-dir:\t Path to where the .csv data files live. Default is . (current Directory)")
-		fmt.Println("\t-url:\tURL of your InfluxDB server, including port. (default: http://localhos:9999)")
-		fmt.Println("\t-bucket:\tBucket name -- no default, REQUIRED")
-		fmt.Println("\t-organization:\tOrganization name -- no default, REQUIRED")
-		fmt.Println("\t-measurement:\tMeasurement name -- no default, REQUIRED")
-		fmt.Println("\t-token:\tInfluxDB Token -- no default, REQUIRED\n")
+	fmt.Println("\nUsage:\n")
+	fmt.Println("\t-dir:\t Path to where the .csv data files live. Default is . (current Directory)")
+	fmt.Println("\t-url:\tURL of your InfluxDB server, including port. (default: http://localhos:9999)")
+	fmt.Println("\t-bucket:\tBucket name -- no default, REQUIRED")
+	fmt.Println("\t-organization:\tOrganization name -- no default, REQUIRED")
+	fmt.Println("\t-measurement:\tMeasurement name -- no default, REQUIRED")
+	fmt.Println("\t-token:\tInfluxDB Token -- no default, REQUIRED\n")
 	log.Fatal(errors.New(e))
 }
 
@@ -61,9 +64,9 @@ func main() {
 	meas := flag.String("measurement", "", "Measurement to send data to *REQUIRED")
 	token := flag.String("token", "", "Database Token *REQUIRED")
 	url := flag.String("url", "http://localhost:9999", "URL of your InfluxDB 2 Instance")
-	
+
 	flag.Parse()
-	// check that all required flags are given. Error if not. 
+	// check that all required flags are given. Error if not.
 	if *token == "" {
 		usage("ERROR: Token is REQUIRED! Must Provide a valid Token")
 	}
@@ -80,7 +83,7 @@ func main() {
 		usage("ERROR: Measurement is REQUIRED! Must Provide a Measurement")
 	}
 
-	// scan the data directory for all files, and order them by date. 
+	// scan the data directory for all files, and order them by date.
 	fmt.Println("Scanning Data Directory: ", *dir)
 	dirname, err := os.Open(*dir)
 	check(err)
@@ -89,7 +92,7 @@ func main() {
 	sort.Slice(files, func(i, j int) bool {
 		return files[i].ModTime().Before(files[j].ModTime())
 	})
-	// new InfluxDB client. 
+	// new InfluxDB client.
 	influx, err := influxdb.New(*url, *token)
 	check(err)
 	defer influx.Close()
@@ -133,7 +136,7 @@ func main() {
 							}
 						}
 					}
-					// validate data a bit ... 
+					// validate data a bit ...
 					if Case.Confirmed != "" {
 						confirmed, err = strconv.Atoi(Case.Confirmed)
 						check(err)
@@ -164,6 +167,7 @@ func main() {
 					} else {
 						longitude = 0.00
 					}
+					Case.Province = strings.TrimRight(Case.Province, `"`)
 					myMetrics := []influxdb.Metric{
 						influxdb.NewRowMetric(
 
