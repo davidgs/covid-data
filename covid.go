@@ -58,34 +58,68 @@ func usage(e string) {
 }
 
 func main() {
-	dir := flag.String("dir", ".", "Directory where the .csv files are")
-	bucket := flag.String("bucket", "", "Bucket to store data in *REQUIRED")
-	org := flag.String("organization", "", "Organization to store data in *REQUIRED")
-	meas := flag.String("measurement", "", "Measurement to send data to *REQUIRED")
-	token := flag.String("token", "", "Database Token *REQUIRED")
-	url := flag.String("url", "http://localhost:9999", "URL of your InfluxDB 2 Instance")
 
+	
+	dirPtr := flag.String("dir", ".", "Directory where the .csv files are")
+	bucketPtr := flag.String("bucket", "", "Bucket to store data in *REQUIRED")
+	orgPtr := flag.String("organization", "", "Organization to store data in *REQUIRED")
+	measPtr := flag.String("measurement", "", "Measurement to send data to *REQUIRED")
+	tokenPtr := flag.String("token", "", "Database Token *REQUIRED")
+	urlPtr := flag.String("url", "http://localhost:9999", "URL of your InfluxDB 2 Instance")
+
+	dir := os.Getenv("DATA_DIR")
+	bucket := os.Getenv("INFLUX_BUCKET")
+	org := os.Getenv("INFLUX_BUCKET")
+	meas := os.Getenv("INFLUX_MEASURE")
+	token := os.Getenv("INFLUX_TOKEN")
+	url := os.Getenv("INFLUX_URL")
+	
 	flag.Parse()
+	// command-line flags over-ride ENV variables
+	if *tokenPtr != "" {
+		token = *tokenPtr
+	}
+	if *bucketPtr != "" {
+		bucket = *bucketPtr
+	}
+	if *orgPtr != "" {
+		org = *orgPtr
+	}
+	if *measPtr != "" {
+		meas = *measPtr
+	}
+	if *tokenPtr != "" {
+		token = *tokenPtr
+	}
+	if *urlPtr != "" {
+		url = *urlPtr
+	}
+	if *dirPtr != "" {
+		dir = *dirPtr
+	}
 	// check that all required flags are given. Error if not.
-	if *token == "" {
+	if token == "" {
 		usage("ERROR: Token is REQUIRED! Must Provide a valid Token")
 	}
-	if *url == "" {
+	if url == ""  {
 		usage("ERROR: Database URL is REQUIRED! Must Provide a valid URL")
 	}
-	if *org == "" {
+	if org == "" {
 		usage("ERROR: Organization is REQUIRED! Must Provide an Organization")
 	}
-	if *bucket == "" {
+	if bucket == "" {
 		usage("ERROR: Bucket is REQUIRED! Must Provide a Bucket")
 	}
-	if *meas == "" {
+	if meas == "" {
 		usage("ERROR: Measurement is REQUIRED! Must Provide a Measurement")
+	}
+	if dir == "" {
+		usage("ERROR: Data Directory is REQUIRED! Must Provide a Measurement")
 	}
 
 	// scan the data directory for all files, and order them by date.
-	fmt.Println("Scanning Data Directory: ", *dir)
-	dirname, err := os.Open(*dir)
+	fmt.Println("Scanning Data Directory: ", dir)
+	dirname, err := os.Open(dir)
 	check(err)
 	files, err := dirname.Readdir(0)
 	check(err)
@@ -93,7 +127,7 @@ func main() {
 		return files[i].ModTime().Before(files[j].ModTime())
 	})
 	// new InfluxDB client.
-	influx, err := influxdb.New(*url, *token)
+	influx, err := influxdb.New(url, token)
 	check(err)
 	defer influx.Close()
 
@@ -101,8 +135,8 @@ func main() {
 	for _, fs := range files {
 		if !fs.IsDir() {
 			if strings.HasSuffix(fs.Name(), ".csv") { // only .csv files
-				fmt.Println("Processing File: ", *dir+"/"+fs.Name())
-				f := *dir + "/" + fs.Name()
+				fmt.Println("Processing File: ", dir+ "/"+fs.Name())
+				f := dir + "/" + fs.Name()
 				dataFile, err := os.OpenFile(f, os.O_RDWR, os.ModePerm)
 				check(err)
 				defer dataFile.Close()
@@ -176,12 +210,12 @@ func main() {
 								"recovered": recovered,
 								"lat":       latitude,
 								"lon":       longitude},
-							*meas,
+							meas,
 							map[string]string{"state_province": Case.Province, "country_region": Case.Country},
 							t),
 					}
 					// write the data to the database.
-					_, err = influx.Write(context.Background(), *bucket, *org, myMetrics...)
+					_, err = influx.Write(context.Background(), bucket, org, myMetrics...)
 					check(err)
 
 				}
