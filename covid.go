@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/influxdata/influxdb-client-go"
+	"github.com/joho/godotenv"
 	"github.com/smartystreets/scanners/csv"
 )
 
@@ -54,18 +55,22 @@ func usage(e string) {
 	fmt.Println("\t-organization:\tOrganization name -- no default, REQUIRED")
 	fmt.Println("\t-measurement:\tMeasurement name -- no default, REQUIRED")
 	fmt.Println("\t-token:\tInfluxDB Token -- no default, REQUIRED\n")
+	fmt.Println("\t-nosave:\t Don't save ENV variables to .env file (default false)")
 	log.Fatal(errors.New(e))
 }
 
 func main() {
 
-	
+	err := godotenv.Load(".env")
+	check(err)
+
 	dirPtr := flag.String("dir", "", "Directory where the .csv files are")
 	bucketPtr := flag.String("bucket", "", "Bucket to store data in *REQUIRED")
 	orgPtr := flag.String("organization", "", "Organization to store data in *REQUIRED")
 	measPtr := flag.String("measurement", "", "Measurement to send data to *REQUIRED")
 	tokenPtr := flag.String("token", "", "Database Token *REQUIRED")
 	urlPtr := flag.String("url", "", "URL of your InfluxDB 2 Instance")
+	savePtr := flag.Bool("nosave", false, "Don't save env variables to .env file")
 
 	dir := os.Getenv("DATA_DIR")
 	bucket := os.Getenv("INFLUX_BUCKET")
@@ -73,7 +78,8 @@ func main() {
 	meas := os.Getenv("INFLUX_MEASURE")
 	token := os.Getenv("INFLUX_TOKEN")
 	url := os.Getenv("INFLUX_URL")
-	
+	lastFile := os.Getenv("LAST_FILE")
+
 	flag.Parse()
 	// command-line flags over-ride ENV variables
 	if token == "" {
@@ -101,7 +107,7 @@ func main() {
 	if token == "" {
 		usage("ERROR: Token is REQUIRED! Must Provide a valid Token")
 	}
-	if url == ""  {
+	if url == "" {
 		usage("ERROR: Database URL is REQUIRED! Must Provide a valid URL")
 	}
 	if org == "" {
@@ -137,13 +143,27 @@ func main() {
 	influx, err := influxdb.New(url, token)
 	check(err)
 	defer influx.Close()
-
+	foundFile := false
+	if lastFile == "" {
+		foundFile = true
+	}
+	finalFile := lastFile
 	// go through each file in the list and process it.
 	for _, fs := range files {
 		if !fs.IsDir() {
 			if strings.HasSuffix(fs.Name(), ".csv") { // only .csv files
-				fmt.Println("Processing File: ", dir+ "/"+fs.Name())
 				f := dir + "/" + fs.Name()
+				if !foundFile {
+					if f != lastFile {
+						continue
+					} else {
+						foundFile = true
+						continue
+					}
+				}
+				fmt.Println("Processing File: ", f)
+
+				finalFile = f
 				dataFile, err := os.OpenFile(f, os.O_RDWR, os.ModePerm)
 				check(err)
 				defer dataFile.Close()
@@ -229,9 +249,36 @@ func main() {
 				err = scanner.Error()
 				check(err)
 				dataFile.Close()
+
 			}
 		}
 	}
 	influx.Close()
+	if !*savePtr {
+		envFile, err := os.OpenFile("./.env", os.O_RDWR|os.O_CREATE|os.O_TRUNC, os.ModePerm)
+		check(err)
+		defer envFile.Close()
 
+		_, err = envFile.Seek(0, 0)
+		check(err)
+
+		newWriter := bufio.NewWriter(envFile)
+		_, err = newWriter.WriteString("INFLUX_TOKEN=" + token + "\n")
+		check(err)
+		_, err = newWriter.WriteString("INFLUX_URL=" + url + "\n")
+		check(err)
+		_, err = newWriter.WriteString("INFLUX_ORG=" + org + "\n")
+		check(err)
+		_, err = newWriter.WriteString("INFLUX_BUCKET=" + bucket + "\n")
+		check(err)
+		_, err = newWriter.WriteString("INFLUX_MEASURE=" + meas + "\n")
+		check(err)
+		_, err = newWriter.WriteString("DATA_DIR=" + dir + "\n")
+		check(err)
+		fs := finalFile + "\n"
+		fmt.Println(fs)
+		_, err = newWriter.WriteString("LAST_FILE=" + finalFile + "\n")
+		check(newWriter.Flush())
+		check(envFile.Close())
+	}
 }

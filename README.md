@@ -6,6 +6,8 @@ read all the .csv files from [Johns Hopkins Corona Virus Tracking Data](https://
 
 ## Usage
 
+The environment file `.env` is read, if present, for any variables listed below.
+
 The following ENV variables are checked:
 
 ```
@@ -26,6 +28,7 @@ Usage:
         -organization:  Organization name -- default: $INFLUX_ORG, REQUIRED
         -measurement:   Measurement name -- default: $INFLUX_MEASURE, REQUIRED
         -token:         InfluxDB Token -- default: $INFLUX_TOKEN, REQUIRED
+        -nosave:        Don't save env variables to the .env file
 
 `$ go build covid.go`
 
@@ -44,3 +47,9 @@ Processing File:  ../../COVID-19/csse_covid_19_data/csse_covid_19_daily_reports/
 ```
 
 Data is written from those files to your InfluxDB instance.
+
+## Saved Environement
+
+If the `-nosave` flag is **not** used, all environment variables are saaved to a `.env` file in the working directory. 
+
+Also saved is the last datafile processed. On subsequent runs, only datafiles added **after** this last-processed file will be read and processed into InfluxDB.
