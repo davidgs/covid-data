@@ -20,8 +20,8 @@ If present, they are used. They are over-ridden by any command-line flags given 
 
 Usage:
 
-        -dir:           Path to where the .csv data files live. Default is . (current Directory)
-        -url:           URL of your InfluxDB server, including port. (default: http://localhos:9999)
+        -dir:           Path to where the .csv data files live. REQUIRED
+        -url:           URL of your InfluxDB server, including port. REQUIRED
         -bucket:        Bucket name -- default: $INFLUX_BUCKET, REQUIRED
         -organization:  Organization name -- default: $INFLUX_ORG, REQUIRED
         -measurement:   Measurement name -- default: $INFLUX_MEASURE, REQUIRED

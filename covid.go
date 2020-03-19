@@ -60,41 +60,41 @@ func usage(e string) {
 func main() {
 
 	
-	dirPtr := flag.String("dir", ".", "Directory where the .csv files are")
+	dirPtr := flag.String("dir", "", "Directory where the .csv files are")
 	bucketPtr := flag.String("bucket", "", "Bucket to store data in *REQUIRED")
 	orgPtr := flag.String("organization", "", "Organization to store data in *REQUIRED")
 	measPtr := flag.String("measurement", "", "Measurement to send data to *REQUIRED")
 	tokenPtr := flag.String("token", "", "Database Token *REQUIRED")
-	urlPtr := flag.String("url", "http://localhost:9999", "URL of your InfluxDB 2 Instance")
+	urlPtr := flag.String("url", "", "URL of your InfluxDB 2 Instance")
 
 	dir := os.Getenv("DATA_DIR")
 	bucket := os.Getenv("INFLUX_BUCKET")
-	org := os.Getenv("INFLUX_BUCKET")
+	org := os.Getenv("INFLUX_ORG")
 	meas := os.Getenv("INFLUX_MEASURE")
 	token := os.Getenv("INFLUX_TOKEN")
 	url := os.Getenv("INFLUX_URL")
 	
 	flag.Parse()
 	// command-line flags over-ride ENV variables
-	if *tokenPtr != "" {
+	if token == "" {
 		token = *tokenPtr
 	}
-	if *bucketPtr != "" {
+	if bucket == "" {
 		bucket = *bucketPtr
 	}
-	if *orgPtr != "" {
+	if org == "" {
 		org = *orgPtr
 	}
-	if *measPtr != "" {
+	if meas == "" {
 		meas = *measPtr
 	}
-	if *tokenPtr != "" {
+	if token == "" {
 		token = *tokenPtr
 	}
-	if *urlPtr != "" {
+	if url == "" {
 		url = *urlPtr
 	}
-	if *dirPtr != "" {
+	if dir == "" {
 		dir = *dirPtr
 	}
 	// check that all required flags are given. Error if not.
@@ -116,6 +116,13 @@ func main() {
 	if dir == "" {
 		usage("ERROR: Data Directory is REQUIRED! Must Provide a Measurement")
 	}
+
+	fmt.Println("Using Values:\n")
+	fmt.Println("\tOrganization: \t", org)
+	fmt.Println("\tBucket: \t", bucket)
+	fmt.Println("\tMeasurement: \t", meas)
+	fmt.Println("\tURL: \t\t", url)
+	fmt.Println("\tData Directory: \t", dir)
 
 	// scan the data directory for all files, and order them by date.
 	fmt.Println("Scanning Data Directory: ", dir)
