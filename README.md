@@ -1,8 +1,8 @@
 # Covid-data
 
-## covid 
+## COVID-19 Data 
 
-read all the .csv files from [Johns Hopkins Corona Virus Tracking Data](https://github.com/CSSEGISandData/COVID-19) into InfluxDB 2
+Read all the .csv data files from [Johns Hopkins Corona Virus Tracking Data](https://github.com/CSSEGISandData/COVID-19) into InfluxDB 2
 
 ## Usage
 
@@ -28,7 +28,6 @@ Usage:
         -organization:  Organization name -- default: $INFLUX_ORG, REQUIRED
         -measurement:   Measurement name -- default: $INFLUX_MEASURE, REQUIRED
         -token:         InfluxDB Token -- default: $INFLUX_TOKEN, REQUIRED
-        -nosave:        Don't save env variables to the .env file
 
 `$ go build covid.go`
 
@@ -48,8 +47,12 @@ Processing File:  ../../COVID-19/csse_covid_19_data/csse_covid_19_daily_reports/
 
 Data is written from those files to your InfluxDB instance.
 
-## Saved Environement
+## Saved Configuration
 
-If the `-nosave` flag is **not** used, all environment variables are saaved to a `.env` file in the working directory. 
+The last datafile processed is saved into a file called `.last`. On subsequent runs, only datafiles added **after** this last-processed file will be read and processed into InfluxDB.
 
-Also saved is the last datafile processed. On subsequent runs, only datafiles added **after** this last-processed file will be read and processed into InfluxDB.
+## Geopsatial Data
+
+Starting sometime in February the dataset started including geospatial data (lat/lng) with all the data. This is now also written to the InfluxDB instance. 
+
+In addition, since InfluxDB now also supports using [s2 GeoHashes](https://s2geometry.io/devguide/s2cell_hierarchy.html), the s2 GeoHash is also written to the database at the same time. If there is no lat/lng data available, lat/lng is written as `0.00` and `0.00` respectively, and an empty-string is entered as the s2 GeoHash.
