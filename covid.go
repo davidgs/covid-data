@@ -16,6 +16,7 @@ import (
 	"github.com/influxdata/influxdb-client-go"
 	"github.com/joho/godotenv"
 	"github.com/smartystreets/scanners/csv"
+	"github.com/golang/geo/s2"
 )
 
 // Case Struct to hold the data for each line
@@ -28,6 +29,7 @@ type Case struct {
 	Recovered  string `csv:"Recovered"`
 	Latitude   string `csv:"Latitude"`
 	Longitude  string `csv:"Longitude"`
+	
 }
 
 // RFC3339FullDate Most common date format in the files
@@ -42,13 +44,14 @@ const RFC3339BadDate = "1/2/06 15:04"
 // streamlined error handling
 func check(e error) {
 	if e != nil {
-		log.Panic(e)
+		log.Fatal(e)
 	}
 }
 
 // usage
 func usage(e string) {
-	fmt.Println("\nUsage:\n")
+	
+		fmt.Println("\nUsage:\n")
 	fmt.Println("\t-dir:\t Path to where the .csv data files live. Default is . (current Directory)")
 	fmt.Println("\t-url:\tURL of your InfluxDB server, including port. (default: http://localhos:9999)")
 	fmt.Println("\t-bucket:\tBucket name -- no default, REQUIRED")
@@ -56,13 +59,13 @@ func usage(e string) {
 	fmt.Println("\t-measurement:\tMeasurement name -- no default, REQUIRED")
 	fmt.Println("\t-token:\tInfluxDB Token -- no default, REQUIRED\n")
 	fmt.Println("\t-nosave:\t Don't save ENV variables to .env file (default false)")
-	log.Fatal(errors.New(e))
+	check(errors.New(e))
 }
 
 func main() {
 
-	err := godotenv.Load(".env")
-	check(err)
+	check(godotenv.Load(".env"))
+    check(godotenv.Load(".last"))
 
 	dirPtr := flag.String("dir", "", "Directory where the .csv files are")
 	bucketPtr := flag.String("bucket", "", "Bucket to store data in *REQUIRED")
@@ -70,7 +73,6 @@ func main() {
 	measPtr := flag.String("measurement", "", "Measurement to send data to *REQUIRED")
 	tokenPtr := flag.String("token", "", "Database Token *REQUIRED")
 	urlPtr := flag.String("url", "", "URL of your InfluxDB 2 Instance")
-	savePtr := flag.Bool("nosave", false, "Don't save env variables to .env file")
 
 	dir := os.Getenv("DATA_DIR")
 	bucket := os.Getenv("INFLUX_BUCKET")
@@ -124,11 +126,11 @@ func main() {
 	}
 
 	fmt.Println("Using Values:\n")
-	fmt.Println("\tOrganization: \t", org)
-	fmt.Println("\tBucket: \t", bucket)
-	fmt.Println("\tMeasurement: \t", meas)
-	fmt.Println("\tURL: \t\t", url)
-	fmt.Println("\tData Directory: \t", dir)
+	fmt.Println("\tOrganization: \t ", org)
+	fmt.Println("\tBucket: \t ", bucket)
+	fmt.Println("\tMeasurement: \t ", meas)
+	fmt.Println("\tURL: \t\t ", url)
+	fmt.Println("\tData Directory:  ", dir)
 
 	// scan the data directory for all files, and order them by date.
 	fmt.Println("Scanning Data Directory: ", dir)
@@ -192,9 +194,7 @@ func main() {
 						t, err = time.Parse(RFC3339OldDate, Case.LastUpdate)
 						if err != nil {
 							t, err = time.Parse(RFC3339BadDate, Case.LastUpdate)
-							if err != nil {
-								log.Panic(err)
-							}
+							check(err)
 						}
 					}
 					// validate data a bit ...
@@ -228,6 +228,21 @@ func main() {
 					} else {
 						longitude = 0.00
 					}
+					var ll s2.LatLng 
+					var cellID s2.CellID 
+					if latitude != 0.00 && longitude != 0.00 {
+						ll = s2.LatLngFromDegrees(latitude, longitude)
+					}
+					if ll.IsValid() {
+						cellID = s2.CellIDFromLatLng(ll)
+					}
+					var cell = ""
+					if cellID.IsValid() {
+						cell = cellID.ToToken()
+					}
+					if cell == "1000000000000001" {
+						cell = ""
+					}
 					Case.Province = strings.TrimRight(Case.Province, `"`)
 					myMetrics := []influxdb.Metric{
 						influxdb.NewRowMetric(
@@ -236,7 +251,8 @@ func main() {
 								"deaths":    dead,
 								"recovered": recovered,
 								"lat":       latitude,
-								"lon":       longitude},
+								"lon":       longitude,
+								"s2":		cell},
 							meas,
 							map[string]string{"state_province": Case.Province, "country_region": Case.Country},
 							t),
@@ -254,31 +270,16 @@ func main() {
 		}
 	}
 	influx.Close()
-	if !*savePtr {
-		envFile, err := os.OpenFile("./.env", os.O_RDWR|os.O_CREATE|os.O_TRUNC, os.ModePerm)
+	
+		envFile, err := os.OpenFile("./.last", os.O_RDWR|os.O_CREATE|os.O_TRUNC, os.ModePerm)
 		check(err)
 		defer envFile.Close()
 
 		_, err = envFile.Seek(0, 0)
 		check(err)
-
 		newWriter := bufio.NewWriter(envFile)
-		_, err = newWriter.WriteString("INFLUX_TOKEN=" + token + "\n")
-		check(err)
-		_, err = newWriter.WriteString("INFLUX_URL=" + url + "\n")
-		check(err)
-		_, err = newWriter.WriteString("INFLUX_ORG=" + org + "\n")
-		check(err)
-		_, err = newWriter.WriteString("INFLUX_BUCKET=" + bucket + "\n")
-		check(err)
-		_, err = newWriter.WriteString("INFLUX_MEASURE=" + meas + "\n")
-		check(err)
-		_, err = newWriter.WriteString("DATA_DIR=" + dir + "\n")
-		check(err)
-		fs := finalFile + "\n"
-		fmt.Println(fs)
 		_, err = newWriter.WriteString("LAST_FILE=" + finalFile + "\n")
 		check(newWriter.Flush())
 		check(envFile.Close())
-	}
+	
 }
