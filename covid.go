@@ -114,13 +114,13 @@ func runtime() {
 	if int64(d.Hours()) > 0 {
 		fmt.Printf("%0.0f Hours, ", d.Hours())
 		fmt.Printf("%0.0f Minutes, ", d.Minutes()/60)
-		secs := d.Seconds()/60.00
+		secs := d.Seconds() / 60.00
 		fmt.Printf("%0.2f Seconds\n", secs)
 		return
 	}
 	if int64(d.Minutes()) > 0.00 {
 		fmt.Printf("%0.0f Minutes, ", d.Minutes())
-		secs := d.Seconds()/60.00
+		secs := d.Seconds() / 60.00
 		fmt.Printf("%0.2f Seconds\n", secs)
 		return
 	}
@@ -310,15 +310,23 @@ func main() {
 				if Case.Country == "Ivory Coast" {
 					Case.Country = "Côte d'Ivoire"
 				}
+				if Case.Country == "North Ireland" {
+					Case.Province = "Northern Ireland"
+					Case.Country = "UK"
+				}
 				Case.Province = strings.ReplaceAll(Case.Province, `"`, ``)
 				Case.Country = strings.ReplaceAll(Case.Country, `"`, ``)
+				fail := strings.Contains(strings.ToLower(Case.Country), strings.ToLower("Diamond"))
+				fail = strings.Contains(strings.ToLower(Case.Country), strings.ToLower("Cruise"))
+				fail = strings.Contains(strings.ToLower(Case.Country), strings.ToLower("others"))
+				//	fail = strings.Contains(strings.ToLower(Case.Province+" "+Case.Country), strings.ToLower("Other"))
 				if Case.Latitude != "" {
 					latitude, err = strconv.ParseFloat(Case.Latitude, 64)
 					check(err)
 					longitude, err = strconv.ParseFloat(Case.Longitude, 64)
 					check(err)
 
-				} else if gClient != nil && !strings.Contains(strings.ToLower(Case.Province + " " + Case.Country), strings.ToLower("Cruise")) {
+				} else if gClient != nil && !fail {
 					ll = geoCode(gClient, Case.Country, Case.Province, "")
 					latitude = ll.Lat.Degrees()
 					longitude = ll.Lng.Degrees()
@@ -350,15 +358,24 @@ func main() {
 				if Case.Country2 == "Ivory Coast" {
 					Case.Country2 = "Côte d'Ivoire"
 				}
+				if Case.Country2 == "North Ireland" {
+					Case.Province2 = "Northern Ireland"
+					Case.Country2 = "UK"
+				}
 
 				Case.Province2 = strings.ReplaceAll(Case.Province2, `"`, ``)
 				Case.Country2 = strings.ReplaceAll(Case.Country2, `"`, ``)
+				fail := strings.Contains(strings.ToLower(Case.Country2), strings.ToLower("Diamond"))
+				fail = strings.Contains(strings.ToLower(Case.Country2), strings.ToLower("Cruise"))
+				fail = strings.Contains(strings.ToLower(Case.Country2), strings.ToLower("others"))
+				//	fail = strings.Contains(strings.ToLower(Case.Province2+" "+Case.Country2), strings.ToLower("Other"))
+
 				if Case.Lat != "" {
 					latitude, err = strconv.ParseFloat(Case.Lat, 64)
 					check(err)
 					longitude, err = strconv.ParseFloat(Case.Long, 64)
 					check(err)
-				} else if gClient != nil && !strings.Contains(strings.ToLower(Case.Province2 + " " + Case.Country2), strings.ToLower("Cruise")) {
+				} else if gClient != nil && !fail {
 					ll = geoCode(gClient, Case.Country2, Case.Province2, Case.Admin2)
 					latitude = ll.Lat.Degrees()
 					longitude = ll.Lng.Degrees()
@@ -387,7 +404,10 @@ func main() {
 			} else {
 				recovered = 0
 			}
-			cell := getS2Id(ll)
+			cell := ""
+			if ll.Lat != 0.00 && ll.Lng != 0.00 {
+				cell = getS2Id(ll)
+			}
 			if Case.FIPS == "" {
 
 				//myMetrics = []influxdb.Metric{
@@ -466,6 +486,7 @@ func getS2Id(latlng s2.LatLng) string {
 		cell = cellID.ToToken()
 	}
 	if cell == "1000000000000001" {
+		fmt.Printf("S2 encoding failed for lat: %0.5f lng %0.5f\n", latlng.Lat, latlng.Lng)
 		return ""
 	}
 	return cell
@@ -512,11 +533,16 @@ func finish() {
 }
 func geoCode(client *maps.Client, country string, province string, admin string) s2.LatLng {
 	var address = make(map[maps.Component]string)
+
 	if country != "" {
 		address[maps.ComponentCountry] = country
 	}
+
 	var p = province
-	if strings.Contains(strings.ToLower(p), strings.ToLower("diammond")) {
+	if strings.Contains(strings.ToLower(p), strings.ToLower("diamond")) || strings.Contains(strings.ToLower(p), strings.ToLower("cruise")) {
+		p = ""
+	}
+	if strings.Contains(strings.ToLower(p), "none") {
 		p = ""
 	}
 	if admin != "" {
@@ -524,9 +550,21 @@ func geoCode(client *maps.Client, country string, province string, admin string)
 	} else {
 		address[maps.ComponentAdministrativeArea] = p
 	}
-	r := &maps.GeocodingRequest{
-		Components: address,
-		Language:   "english",
+	var r = &maps.GeocodingRequest{}
+	// oh FFS, google maps only understands the country-code for Georgia.
+
+	if country == "Georgia" {
+		address[maps.ComponentCountry] = "GE"
+		r = &maps.GeocodingRequest{
+			Address:    "GE",
+			Components: address,
+			Language:   "english",
+		}
+	} else {
+		r = &maps.GeocodingRequest{
+			Components: address,
+			Language:   "english",
+		}
 	}
 	resp, err := client.Geocode(context.TODO(), r)
 	check(err)
