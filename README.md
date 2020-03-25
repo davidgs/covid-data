@@ -1,6 +1,6 @@
 # Covid-data
 
-## COVID-19 Data 
+## COVID-19 Data
 
 Read all the .csv data files from [Johns Hopkins Corona Virus Tracking Data](https://github.com/CSSEGISandData/COVID-19) into InfluxDB 2
 
@@ -17,6 +17,7 @@ INFLUX_ORG
 INFLUX_MEASURE
 INFLUX_URL
 DATA_DIR
+MAPS_TOKEN
 ```
 If present, they are used. They are over-ridden by any command-line flags given at runtime.
 
@@ -28,6 +29,7 @@ Usage:
         -organization:  Organization name -- default: $INFLUX_ORG, REQUIRED
         -measurement:   Measurement name -- default: $INFLUX_MEASURE, REQUIRED
         -token:         InfluxDB Token -- default: $INFLUX_TOKEN, REQUIRED
+        -gtoken:        Google Maps API Token
 
 `$ go build covid.go`
 
@@ -47,12 +49,18 @@ Processing File:  ../../COVID-19/csse_covid_19_data/csse_covid_19_daily_reports/
 
 Data is written from those files to your InfluxDB instance.
 
+## Batch Processing
+
+By default (now) data is sent to InfluxDB in batches of 500 points/write. You can change this by changing the value of `BatchSize`. A `BatchSize` of 0 will write each result as it is read. 
+
 ## Saved Configuration
 
-The last datafile processed is saved into a file called `.last`. On subsequent runs, only datafiles added **after** this last-processed file will be read and processed into InfluxDB.
+The last processing time is saved into a file called `.last`. On subsequent runs, only datafiles added **after** this time will be read and processed into InfluxDB. The time is saved as a Unix timestamp.
 
 ## Geopsatial Data
 
-Starting sometime in February the dataset started including geospatial data (lat/lng) with all the data. This is now also written to the InfluxDB instance. 
+Starting sometime in February the dataset started including geospatial data (lat/lng) with all the data. This is now also written to the InfluxDB instance.
 
-In addition, since InfluxDB now also supports using [s2 GeoHashes](https://s2geometry.io/devguide/s2cell_hierarchy.html), the s2 GeoHash is also written to the database at the same time. If there is no lat/lng data available, lat/lng is written as `0.00` and `0.00` respectively, and an empty-string is entered as the s2 GeoHash.
+In addition, since InfluxDB now also supports using [s2 GeoHashes](https://s2geometry.io/devguide/s2cell_hierarchy.html), the s2 GeoHash is also written to the database at the same time as a tag called `s2_cell_id`. If there is no lat/lng data available, lat/lng is written as `0.00` and `0.00` respectively, and an empty-string is entered as the s2 GeoHash tag.
+
+If you've provided a Google Maps API token, the `Country` and `Province` data from the record is used to reverse-encode the location and add a rough lat/lng before the `s2_cell_id` is calculated. The new data format includes
