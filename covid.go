@@ -250,9 +250,9 @@ func main() {
 
 	// scan the data directory for all files.
 	printIt(fmt.Sprintf("Scanning Data Directory: %s\n", options.Directory))
-	//files, err := filterFiles(options.Directory, ".csv", lastTime.Unix())
+	files, err := filterFiles(options.Directory, ".csv", lastTime.Unix())
 	check(err)
-	files := []string{"../COVID-19/csse_covid_19_data/csse_covid_19_daily_reports/02-01-2020.csv"}
+	//files := []string{"../COVID-19/csse_covid_19_data/csse_covid_19_daily_reports/02-01-2020.csv"}
 	if len(files) == 1 {
 		printIt(fmt.Sprintf("Processing %d data file.\n", len(files)))
 	} else if len(files) == 0 {
