@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"context"
 	"errors"
-	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -16,6 +15,8 @@ import (
 
 	"github.com/golang/geo/s2"
 	"github.com/influxdata/influxdb-client-go"
+	protocol "github.com/influxdata/line-protocol"
+	flags "github.com/jessevdk/go-flags"
 	"github.com/joho/godotenv"
 	"github.com/smartystreets/scanners/csv"
 	"googlemaps.github.io/maps"
@@ -73,15 +74,17 @@ func check(e error) {
 // usage
 func usage(e string) {
 
-	fmt.Println("\nUsage:")
-	fmt.Println("\t-dir:\t Path to where the .csv data files live. Default is . (current Directory)")
-	fmt.Println("\t-url:\tURL of your InfluxDB server, including port. (default: http://localhos:9999)")
-	fmt.Println("\t-bucket:\tBucket name -- no default, REQUIRED")
-	fmt.Println("\t-organization:\tOrganization name -- no default, REQUIRED")
-	fmt.Println("\t-measurement:\tMeasurement name -- no default, REQUIRED")
-	fmt.Println("\t-token:\tInfluxDB Token -- no default, REQUIRED")
-	fmt.Println("\t-gtoken:\tGoogle Maps API Token if you want to reverse-encode missing location data")
-	fmt.Println("")
+	printIt("\nUsage:\n")
+	printIt("\t-dir:\t Path to where the .csv data files live. Default is . (current Directory)\n")
+	printIt("\t-url:\tURL of your InfluxDB server, including port. (default: http://localhos:9999)\n")
+	printIt("\t-bucket:\tBucket name -- no default, REQUIRED\n")
+	printIt("\t-organization:\tOrganization name -- no default, REQUIRED\n")
+	printIt("\t-measurement:\tMeasurement name -- no default, REQUIRED\n")
+	printIt("\t-token:\tInfluxDB Token -- no default, REQUIRED\n")
+	printIt("\t-out:\tWrite line-protocol to stdout or -outfile \n")
+	printIt("\t-outfile\tfile for line-protocol output. -- default is ./output.lp\n")
+	printIt("\t-gtoken:\tGoogle Maps API Token if you want to reverse-encode missing location data\n")
+	printIt("\n")
 	check(errors.New(e))
 }
 
@@ -105,6 +108,21 @@ func filterFiles(dir, suffix string, before int64) ([]string, error) {
 	return res, nil
 }
 
+type Options struct {
+	Out          bool   `short:"o" long:"out" description:"Output to file" optional:"yes"`
+	Directory    string `short:"d" long:"dir" description:"Directory where the .csv files are" optional:"yes" env:"DATA_DIR"`
+	Bucket       string `short:"b" long:"bucket" description:"Bucket to store data in" optional:"yes" env:"INFLUX_BUCKET"`
+	Organization string `short:"g" long:"org" description:"Organization to store data" optional:"yes" env:"INFLUX_ORG"`
+	Measurement  string `short:"m" long:"measurement" description:"Measurement to send data to" optional:"yes" env:"INFLUX_MEASURE"`
+	Token        string `short:"t" long:"token" description:"Database Token" optional:"yes" env:"INFLUX_TOKEN"`
+	Location     string `short:"u" long:"url" description:"URL of your InfluxDB 2 Instance" optional:"yes" env:"INFLUX_URL"`
+	Maps         string `short:"a" long:"apitoken" description:"Google Maps API Token" optional:"yes" env:"MAPS_TOKEN"`
+	File         string `short:"f" long:"file" description:"Data output file" optional:"yes" optional-value:"./output.lp"env:"INFLUX_OUT"`
+}
+
+var options Options
+var parser = flags.NewParser(&options, flags.Default)
+var outFile string
 // how long the process took
 func runtime() {
 	t1 := time.Now()
@@ -112,27 +130,41 @@ func runtime() {
 	d := t1.Sub(start)
 	fmt.Print("Total Runtime ")
 	if int64(d.Hours()) > 0 {
-		fmt.Printf("%0.0f Hours, ", d.Hours())
-		fmt.Printf("%0.0f Minutes, ", d.Minutes()/60)
+		printIt(fmt.Sprintf("%0.0f Hours, ", d.Hours()))
+		printIt(fmt.Sprintf("%0.0f Minutes, ", d.Minutes()/60))
 		secs := d.Seconds() / 60.00
-		fmt.Printf("%0.2f Seconds\n", secs)
+		printIt(fmt.Sprintf("%0.2f Seconds\n", secs))
 		return
 	}
 	if int64(d.Minutes()) > 0.00 {
-		fmt.Printf("%0.0f Minutes, ", d.Minutes())
+		printIt(fmt.Sprintf("%0.0f Minutes, ", d.Minutes()))
 		secs := d.Seconds() / 60.00
-		fmt.Printf("%0.2f Seconds\n", secs)
+		printIt(fmt.Sprintf("%0.2f Seconds\n", secs))
 		return
 	}
 	if int64(d.Seconds()) > 0 {
-		fmt.Printf("%0.2f Seconds ", d.Seconds())
+		printIt(fmt.Sprintf("%0.2f Seconds \n", d.Seconds()))
 	} else {
-		fmt.Printf("%d Milliseconds\n", d.Milliseconds())
+		printIt(fmt.Sprintf("%d Milliseconds\n", d.Milliseconds()))
 	}
 }
 
+func printIt(m string){
+	if options.Out && options.File == "stdout"{
+		fmt.Fprintf(os.Stderr, m)
+	} else {
+		fmt.Print(m)
+	}
+}
 func main() {
 	start = time.Now()
+	if _, err := parser.Parse(); err != nil {
+		if flagsErr, ok := err.(*flags.Error); ok && flagsErr.Type == flags.ErrHelp {
+			os.Exit(0)
+		} else {
+			os.Exit(1)
+		}
+	}
 	// read environment file, if it exists
 	_, err := os.Stat("./.env")
 	// check if not exist
@@ -146,68 +178,53 @@ func main() {
 		check(godotenv.Load(".last"))
 	}
 
-	dirPtr := flag.String("dir", "", "Directory where the .csv files are")
-	bucketPtr := flag.String("bucket", "", "Bucket to store data in *REQUIRED")
-	orgPtr := flag.String("organization", "", "Organization to store data in *REQUIRED")
-	measPtr := flag.String("measurement", "", "Measurement to send data to *REQUIRED")
-	tokenPtr := flag.String("token", "", "Database Token *REQUIRED")
-	urlPtr := flag.String("url", "", "URL of your InfluxDB 2 Instance")
-	gtokePtr := flag.String("gtoken", "", "Google Maps API Token, if desired")
-
-	dir := os.Getenv("DATA_DIR")
-	bucket := os.Getenv("INFLUX_BUCKET")
-	org := os.Getenv("INFLUX_ORG")
-	meas := os.Getenv("INFLUX_MEASURE")
-	token := os.Getenv("INFLUX_TOKEN")
-	url := os.Getenv("INFLUX_URL")
-	gtoke := os.Getenv("MAPS_TOKEN")
 	lastFile := os.Getenv("LAST_RUN")
 
-	flag.Parse()
 	// command-line flags over-ride ENV variables
-	if token == "" {
-		token = *tokenPtr
+	if os.Getenv("INFLUX_TOKEN") != "" {
+		options.Token = os.Getenv("INFLUX_TOKEN")
 	}
-	if bucket == "" {
-		bucket = *bucketPtr
+	if os.Getenv("INFLUX_BUCKET") != "" {
+		options.Bucket = os.Getenv("INFLUX_BUCKET")
 	}
-	if org == "" {
-		org = *orgPtr
+	if os.Getenv("INFLUX_ORG") != "" {
+		options.Organization = os.Getenv("INFLUX_ORG")
 	}
-	if meas == "" {
-		meas = *measPtr
+	if os.Getenv("INFLUX_MEASURE") != "" {
+		options.Measurement = os.Getenv("INFLUX_MEASURE")
 	}
-	if token == "" {
-		token = *tokenPtr
+	if os.Getenv("INFLUX_URL") != "" {
+		options.Location = os.Getenv("INFLUX_URL")
 	}
-	if url == "" {
-		url = *urlPtr
+	if os.Getenv("DATA_DIR") != "" {
+		options.Directory = os.Getenv("DATA_DIR")
 	}
-	if dir == "" {
-		dir = *dirPtr
+	if os.Getenv("MAPS_TOKEN") != "" {
+		options.Maps = os.Getenv("MAPS_TOKEN")
 	}
-	if gtoke == "" {
-		gtoke = *gtokePtr
+	if options.File == "" {
+			options.File = "stdout"
 	}
 	// check that all required flags are given. Error if not.
-	if token == "" {
+	if options.Token == "" {
 		usage("ERROR: Token is REQUIRED! Must Provide a valid Token")
 	}
-	if url == "" {
+	if options.Location == "" {
 		usage("ERROR: Database URL is REQUIRED! Must Provide a valid URL")
 	}
-	if org == "" {
+	if options.Organization == "" {
 		usage("ERROR: Organization is REQUIRED! Must Provide an Organization")
 	}
-	if bucket == "" {
+	if options.Bucket == "" {
 		usage("ERROR: Bucket is REQUIRED! Must Provide a Bucket")
 	}
-	if meas == "" {
+	if options.Measurement == "" {
 		usage("ERROR: Measurement is REQUIRED! Must Provide a Measurement")
 	}
-	if dir == "" {
+	if options.Directory == "" {
 		usage("ERROR: Data Directory is REQUIRED! Must Provide a Measurement")
 	}
+
 	// if we have never run it, set the date to
 	// before the oldest data file. Otherwise,
 	// set it to the date we last ran.
@@ -218,44 +235,44 @@ func main() {
 		check(err)
 		lastTime = time.Unix(int64(lf), 0)
 	}
-	fmt.Println("Using Values:")
-	fmt.Println("\tOrganization: \t ", org)
-	fmt.Println("\tBucket: \t ", bucket)
-	fmt.Println("\tMeasurement: \t ", meas)
-	fmt.Println("\tURL: \t\t ", url)
-	if gtoke != "" {
-		fmt.Println("\tGeoLocating:\t  Using Google Maps Geolocations")
+	printIt("Using Values:\n")
+	printIt(fmt.Sprintf("\tOrganization: \t %s\n", options.Organization))
+	printIt(fmt.Sprintf("\tBucket: \t %s\n", options.Bucket))
+	printIt(fmt.Sprintf("\tMeasurement: \t %s\n", options.Measurement))
+	printIt(fmt.Sprintf("\tURL: \t\t %s\n", options.Location))
+	if options.Maps != "" {
+		printIt("\tGeoLocating:\t  Using Google Maps Geolocations\n")
 	} else {
-		fmt.Println("\tGeoLocating:  non-geo-tagged data will not be geolocated")
+		printIt("\tGeoLocating:  non-geo-tagged data will not be geolocated\n")
 	}
-	fmt.Println("\tLast run:\t  " + lastTime.Local().String())
-	fmt.Printf("\tData Directory:   %s\n\n", dir)
+	printIt("\tLast run:\t  " + lastTime.Local().String() + "\n")
+	printIt(fmt.Sprintf("\tData Directory:   %s\n\n", options.Directory))
 
 	// scan the data directory for all files.
-	fmt.Println("Scanning Data Directory: ", dir)
-	files, err := filterFiles(dir, ".csv", lastTime.Unix())
+	printIt(fmt.Sprintf("Scanning Data Directory: %s\n", options.Directory))
+	//files, err := filterFiles(options.Directory, ".csv", lastTime.Unix())
 	check(err)
-	//files := []string{"../COVID-19/csse_covid_19_data/csse_covid_19_daily_reports/02-01-2020.csv"}
+	files := []string{"../COVID-19/csse_covid_19_data/csse_covid_19_daily_reports/02-01-2020.csv"}
 	if len(files) == 1 {
-		fmt.Printf("Processing %d data file.\n", len(files))
+		printIt(fmt.Sprintf("Processing %d data file.\n", len(files)))
 	} else if len(files) == 0 {
-		fmt.Printf("No new data files to process.\n\n")
+		printIt(fmt.Sprintf("No new data files to process.\n\n"))
 		runtime()
 		os.Exit(0)
 	} else {
-		fmt.Printf("Processing %d data files.\n", len(files))
+		printIt(fmt.Sprintf("Processing %d data files.\n", len(files)))
 	}
 
 	var gClient *maps.Client
-	if gtoke != "" {
-		gClient, err = maps.NewClient(maps.WithAPIKey(gtoke))
+	if options.Maps != "" {
+		gClient, err = maps.NewClient(maps.WithAPIKey(options.Maps))
 		check(err)
 	}
 	myMetrics := []influxdb.Metric{}
 	batchCount := 0
 	// go through each file in the list and process it.
 	for _, fs := range files {
-		fmt.Println("Processing File: ", fs)
+		printIt(fmt.Sprintf("Processing File: %s\n", fs))
 		dataFile, err := os.OpenFile(fs, os.O_RDWR, os.ModePerm)
 		check(err)
 		defer dataFile.Close()
@@ -287,39 +304,19 @@ func main() {
 			var ll s2.LatLng
 			if Case.FIPS == "" {
 				// validate data a bit ...
-				if Case.Province != "" {
-					Case.Province = strings.ReplaceAll(Case.Province, `"`, ``)
-				}
-				if Case.Country == "Mainland China" {
-					Case.Country = "China"
-				}
-				if Case.Country == "Viet Nam" {
-					Case.Country = "Vietnam"
-				}
-				if Case.Country == "Korea, South" {
-					Case.Country = "South Korea"
-				}
-				if Case.Country == "Hong Kong SAR" || Case.Country == "Hong Kong" {
-					Case.Country = "Hong Kong"
-					Case.Province = ""
-				}
-				if Case.Country == "Macau SAR" || Case.Country == "Macau" {
-					Case.Country = "Macao"
-					Case.Province = ""
-				}
-				if Case.Country == "Ivory Coast" {
-					Case.Country = "Côte d'Ivoire"
-				}
-				if Case.Country == "North Ireland" {
-					Case.Province = "Northern Ireland"
+				Case.Country = cleanStrings(Case.Country)
+				if Case.Country == "Northern Ireland" {
+					Case.Province = Case.Country
 					Case.Country = "UK"
+				}
+				if Case.Country2 == "Macao" {
+					Case.Province2 = "Macao"
 				}
 				Case.Province = strings.ReplaceAll(Case.Province, `"`, ``)
 				Case.Country = strings.ReplaceAll(Case.Country, `"`, ``)
 				fail := strings.Contains(strings.ToLower(Case.Country), strings.ToLower("Diamond"))
 				fail = strings.Contains(strings.ToLower(Case.Country), strings.ToLower("Cruise"))
 				fail = strings.Contains(strings.ToLower(Case.Country), strings.ToLower("others"))
-				//	fail = strings.Contains(strings.ToLower(Case.Province+" "+Case.Country), strings.ToLower("Other"))
 				if Case.Latitude != "" {
 					latitude, err = strconv.ParseFloat(Case.Latitude, 64)
 					check(err)
@@ -335,34 +332,14 @@ func main() {
 					longitude = 0.00
 				}
 			} else { // Case2
-				if Case.Province2 != "" {
-					Case.Province2 = strings.ReplaceAll(Case.Province2, `"`, ``)
-				}
-				if Case.Country2 == "Mainland China" {
-					Case.Country2 = "China"
-				}
-				if Case.Country2 == "Viet Nam" {
-					Case.Country2 = "Vietnam"
-				}
-				if Case.Country2 == "Korea, South" {
-					Case.Country2 = "South Korea"
-				}
-				if Case.Country2 == "Hong Kong SAR" || Case.Country2 == "Hong Kong" {
-					Case.Country2 = "Hong Kong"
-					Case.Province = ""
-				}
-				if Case.Country2 == "Macau SAR" || Case.Country2 == "Macau" {
-					Case.Country2 = "Macao"
-					Case.Province2 = ""
-				}
-				if Case.Country2 == "Ivory Coast" {
-					Case.Country2 = "Côte d'Ivoire"
-				}
-				if Case.Country2 == "North Ireland" {
-					Case.Province2 = "Northern Ireland"
+				Case.Country2 = cleanStrings(Case.Country2)
+				if Case.Country2 == "Northern Ireland" {
+					Case.Province2 = Case.Country2
 					Case.Country2 = "UK"
 				}
-
+				if Case.Country2 == "Macao" {
+					Case.Province2 = "Macao"
+				}
 				Case.Province2 = strings.ReplaceAll(Case.Province2, `"`, ``)
 				Case.Country2 = strings.ReplaceAll(Case.Country2, `"`, ``)
 				fail := strings.Contains(strings.ToLower(Case.Country2), strings.ToLower("Diamond"))
@@ -418,7 +395,7 @@ func main() {
 						"recovered": recovered,
 						"lat":       latitude,
 						"lon":       longitude},
-					meas,
+					options.Measurement,
 					map[string]string{
 						"state_province": Case.Province,
 						"country_region": Case.Country,
@@ -439,7 +416,7 @@ func main() {
 						"recovered": recovered,
 						"lat":       latitude,
 						"lon":       longitude},
-					meas,
+					options.Measurement,
 					map[string]string{
 						"state_province": Case.Province2,
 						"country_region": Case.Country2,
@@ -455,14 +432,18 @@ func main() {
 			}
 			// write the data to the database.
 			if batchCount > BatchSize {
-				// new InfluxDB client.
-				influx, err := influxdb.New(url, token)
-				check(err)
-				defer influx.Close()
-				_, err = influx.Write(context.Background(), bucket, org, myMetrics...)
-				check(err)
-				batchCount = 0
-				influx.Close()
+				if !options.Out {
+					// new InfluxDB client.
+					influx, err := influxdb.New(options.Location, options.Token)
+					check(err)
+					defer influx.Close()
+					_, err = influx.Write(context.Background(), options.Bucket, options.Organization, myMetrics...)
+					check(err)
+					batchCount = 0
+					influx.Close()
+				} else {
+					outPrint(myMetrics)
+				}
 			}
 
 		}
@@ -471,9 +452,53 @@ func main() {
 		dataFile.Close()
 
 	}
+	if batchCount > 0 {
+		if !options.Out {
+			// new InfluxDB client.
+			influx, err := influxdb.New(options.Location, options.Token)
+			check(err)
+			defer influx.Close()
+			_, err = influx.Write(context.Background(), options.Bucket, options.Organization, myMetrics...)
+			check(err)
+			batchCount = 0
+			influx.Close()
+		} else {
+			outPrint(myMetrics)
+		}
+	}
 
 	finish()
 
+}
+
+
+func cleanStrings(input string) string {
+
+	if input != "" {
+		input = strings.ReplaceAll(input, `"`, ``)
+	}
+	if input == "Mainland China" {
+		return "China"
+	}
+	if input == "Viet Nam" {
+		return "Vietnam"
+	}
+	if input == "Korea, South" {
+		return  "South Korea"
+	}
+	if input == "Hong Kong SAR" || input == "Hong Kong" {
+		return  "Hong Kong"
+	}
+	if input == "Macau SAR" || input == "Macau" {
+		return "Macao"
+	}
+	if input == "Ivory Coast" {
+		return "Côte d'Ivoire"
+	}
+	if input == "North Ireland" {
+		return "Northern Ireland"
+	}
+	return input
 }
 
 func getS2Id(latlng s2.LatLng) string {
@@ -486,12 +511,43 @@ func getS2Id(latlng s2.LatLng) string {
 		cell = cellID.ToToken()
 	}
 	if cell == "1000000000000001" {
-		fmt.Printf("S2 encoding failed for lat: %0.5f lng %0.5f\n", latlng.Lat, latlng.Lng)
+		printIt(fmt.Sprintf("S2 encoding failed for lat: %0.5f lng %0.5f\n", latlng.Lat, latlng.Lng))
 		return ""
 	}
 	return cell
 }
 
+func outPrint(data []protocol.Metric) {
+	var serializer *protocol.Encoder
+	var dataFile *os.File
+
+	if options.File == "stdout" {
+		dataFile = os.Stdout
+
+	} else {
+		_, err := os.Stat(options.File)
+		if os.IsNotExist(err) {
+			_, err = os.Create(options.File)
+			check(err)
+		}
+		dataFile, err = os.OpenFile(options.File, os.O_RDWR, os.ModePerm)
+		check(err)
+		_, err = dataFile.Seek(0, 2)
+		check(err)
+		defer dataFile.Close()
+
+	}
+	serializer = protocol.NewEncoder(dataFile)
+	serializer.SetMaxLineBytes(1024)
+	serializer.SetFieldTypeSupport(protocol.UintSupport)
+	for _, row := range data {
+		serializer.Encode(row)
+	}
+	if options.File != "stdout" {
+		dataFile.Close()
+	}
+
+}
 func parseLatLng(latlng string, r *maps.GeocodingRequest) {
 	if latlng != "" {
 		l := strings.Split(latlng, ",")
@@ -569,7 +625,7 @@ func geoCode(client *maps.Client, country string, province string, admin string)
 	resp, err := client.Geocode(context.TODO(), r)
 	check(err)
 	if len(resp) < 1 {
-		fmt.Printf("FAILED: Province:\t%s\t Country:\t%s\n", province, country)
+		printIt(fmt.Sprintf("FAILED: Province:\t%s\t Country:\t%s\n", province, country))
 		return s2.LatLngFromDegrees(0.00, 0.00)
 	}
 	return s2.LatLngFromDegrees(resp[0].Geometry.Location.Lat, resp[0].Geometry.Location.Lng)
