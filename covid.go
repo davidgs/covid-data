@@ -63,51 +63,9 @@ const RFC3339FileDate = "01-02-2006"
 // BatchSize size of the batches to write
 const BatchSize = 500
 
-// streamlined error handling
-func check(e error) {
-	if e != nil {
-		runtime()
-		log.Fatal(e)
-	}
-}
 
-// usage
-func usage(e string) {
 
-	printIt("\nUsage:\n")
-	printIt("\t-dir:\t Path to where the .csv data files live. Default is . (current Directory)\n")
-	printIt("\t-url:\tURL of your InfluxDB server, including port. (default: http://localhos:9999)\n")
-	printIt("\t-bucket:\tBucket name -- no default, REQUIRED\n")
-	printIt("\t-organization:\tOrganization name -- no default, REQUIRED\n")
-	printIt("\t-measurement:\tMeasurement name -- no default, REQUIRED\n")
-	printIt("\t-token:\tInfluxDB Token -- no default, REQUIRED\n")
-	printIt("\t-out:\tWrite line-protocol to stdout or -outfile \n")
-	printIt("\t-outfile\tfile for line-protocol output. -- default is ./output.lp\n")
-	printIt("\t-gtoken:\tGoogle Maps API Token if you want to reverse-encode missing location data\n")
-	printIt("\n")
-	check(errors.New(e))
-}
-
-// filter the files to make sure we only get .csv files, and only after the 'last run' time
-func filterFiles(dir, suffix string, before int64) ([]string, error) {
-	files, err := ioutil.ReadDir(dir)
-	if err != nil {
-		return nil, err
-	}
-	res := []string{}
-	for _, f := range files {
-		if !f.IsDir() && strings.HasSuffix(f.Name(), suffix) {
-			n := strings.TrimSuffix(f.Name(), ".csv")
-			d, err := time.Parse(RFC3339FileDate, n)
-			check(err)
-			if f.ModTime().Unix() > before && d.Unix() > before {
-				res = append(res, filepath.Join(dir, f.Name()))
-			}
-		}
-	}
-	return res, nil
-}
-
+// Options struct to hold the runtime options
 type Options struct {
 	Out          bool   `short:"o" long:"out" description:"Output to file" optional:"yes"`
 	Directory    string `short:"d" long:"dir" description:"Directory where the .csv files are" optional:"yes" env:"DATA_DIR"`
@@ -117,51 +75,22 @@ type Options struct {
 	Token        string `short:"t" long:"token" description:"Database Token" optional:"yes" env:"INFLUX_TOKEN"`
 	Location     string `short:"u" long:"url" description:"URL of your InfluxDB 2 Instance" optional:"yes" env:"INFLUX_URL"`
 	Maps         string `short:"a" long:"apitoken" description:"Google Maps API Token" optional:"yes" env:"MAPS_TOKEN"`
-	File         string `short:"f" long:"file" description:"Data output file" optional:"yes" optional-value:"./output.lp"env:"INFLUX_OUT"`
+	File         string `short:"f" long:"file" description:"Data output file" optional:"yes" env:"INFLUX_OUT" command:"Out"`
+	Split        string `short:"s" long:"split" description:"Split output into multiple files in given directory" optional:"yes" optional-value:"data" command:"Out"`
 }
 
 var options Options
 var parser = flags.NewParser(&options, flags.Default)
 var outFile string
-// how long the process took
-func runtime() {
-	t1 := time.Now()
-	// Get duration.
-	d := t1.Sub(start)
-	fmt.Print("Total Runtime ")
-	if int64(d.Hours()) > 0 {
-		printIt(fmt.Sprintf("%0.0f Hours, ", d.Hours()))
-		printIt(fmt.Sprintf("%0.0f Minutes, ", d.Minutes()/60))
-		secs := d.Seconds() / 60.00
-		printIt(fmt.Sprintf("%0.2f Seconds\n", secs))
-		return
-	}
-	if int64(d.Minutes()) > 0.00 {
-		printIt(fmt.Sprintf("%0.0f Minutes, ", d.Minutes()))
-		secs := d.Seconds() / 60.00
-		printIt(fmt.Sprintf("%0.2f Seconds\n", secs))
-		return
-	}
-	if int64(d.Seconds()) > 0 {
-		printIt(fmt.Sprintf("%0.2f Seconds \n", d.Seconds()))
-	} else {
-		printIt(fmt.Sprintf("%d Milliseconds\n", d.Milliseconds()))
-	}
-}
 
-func printIt(m string){
-	if options.Out && options.File == "stdout"{
-		fmt.Fprintf(os.Stderr, m)
-	} else {
-		fmt.Print(m)
-	}
-}
+
 func main() {
 	start = time.Now()
 	if _, err := parser.Parse(); err != nil {
 		if flagsErr, ok := err.(*flags.Error); ok && flagsErr.Type == flags.ErrHelp {
 			os.Exit(0)
 		} else {
+			check(err)
 			os.Exit(1)
 		}
 	}
@@ -203,23 +132,26 @@ func main() {
 		options.Maps = os.Getenv("MAPS_TOKEN")
 	}
 	if options.File == "" {
-			options.File = "stdout"
+		options.File = "stdout"
 	}
 	// check that all required flags are given. Error if not.
-	if options.Token == "" {
-		usage("ERROR: Token is REQUIRED! Must Provide a valid Token")
-	}
-	if options.Location == "" {
-		usage("ERROR: Database URL is REQUIRED! Must Provide a valid URL")
-	}
-	if options.Organization == "" {
-		usage("ERROR: Organization is REQUIRED! Must Provide an Organization")
-	}
-	if options.Bucket == "" {
-		usage("ERROR: Bucket is REQUIRED! Must Provide a Bucket")
-	}
-	if options.Measurement == "" {
-		usage("ERROR: Measurement is REQUIRED! Must Provide a Measurement")
+	// only need influx options if wrting to Influx.
+	if !options.Out && options.Split == "" {
+		if options.Token == "" {
+			usage("ERROR: Token is REQUIRED! Must Provide a valid Token")
+		}
+		if options.Location == "" {
+			usage("ERROR: Database URL is REQUIRED! Must Provide a valid URL")
+		}
+		if options.Organization == "" {
+			usage("ERROR: Organization is REQUIRED! Must Provide an Organization")
+		}
+		if options.Bucket == "" {
+			usage("ERROR: Bucket is REQUIRED! Must Provide a Bucket")
+		}
+		if options.Measurement == "" {
+			usage("ERROR: Measurement is REQUIRED! Must Provide a Measurement")
+		}
 	}
 	if options.Directory == "" {
 		usage("ERROR: Data Directory is REQUIRED! Must Provide a Measurement")
@@ -241,12 +173,20 @@ func main() {
 	printIt(fmt.Sprintf("\tMeasurement: \t %s\n", options.Measurement))
 	printIt(fmt.Sprintf("\tURL: \t\t %s\n", options.Location))
 	if options.Maps != "" {
-		printIt("\tGeoLocating:\t  Using Google Maps Geolocations\n")
+		printIt("\tGeoLocating:\t Using Google Maps Geolocations\n")
 	} else {
-		printIt("\tGeoLocating:  non-geo-tagged data will not be geolocated\n")
+		printIt("\tGeoLocating:\t non-geo-tagged data will not be geolocated\n")
 	}
-	printIt("\tLast run:\t  " + lastTime.Local().String() + "\n")
-	printIt(fmt.Sprintf("\tData Directory:   %s\n\n", options.Directory))
+	printIt("\tLast run:\t " + lastTime.Local().String() + "\n")
+	printIt(fmt.Sprintf("\tData Directory:  %s\n", options.Directory))
+	if options.Out || options.Split != "" {
+		if options.Split == "" {
+			printIt(fmt.Sprintf("\tOutputting line protocol to: %s\n", options.File))
+		} else {
+			printIt(fmt.Sprintf("\tWriting line-protocol files to Directory: %s\n", options.Split))
+		}
+	}
+	printIt("\n")
 
 	// scan the data directory for all files.
 	printIt(fmt.Sprintf("Scanning Data Directory: %s\n", options.Directory))
@@ -270,14 +210,26 @@ func main() {
 	}
 	myMetrics := []influxdb.Metric{}
 	batchCount := 0
+	if options.Split != "" {
+		if _, err := os.Stat(options.Split); os.IsNotExist(err) {
+			check(os.MkdirAll(options.Split, os.ModePerm))
+		}
+	}
 	// go through each file in the list and process it.
 	for _, fs := range files {
-		printIt(fmt.Sprintf("Processing File: %s\n", fs))
-		dataFile, err := os.OpenFile(fs, os.O_RDWR, os.ModePerm)
+		if fs == "" {
+			continue
+		}
+		fn := filepath.Join(options.Directory, fs)
+		printIt(fmt.Sprintf("Processing File: %s\n", fn))
+		dataFile, err := os.OpenFile(fn, os.O_RDWR, os.ModePerm)
 		check(err)
 		defer dataFile.Close()
 		_, err = dataFile.Seek(0, 0)
 		check(err)
+		if options.Split != "" {
+			options.File = filepath.Join(options.Split, strings.Replace(fs, ".csv", ".lp", 1))
+		}
 		newReader := bufio.NewReader(dataFile)
 		scanner, err := csv.NewStructScanner(newReader)
 		check(err)
@@ -302,8 +254,20 @@ func main() {
 			stringTime := decipherTime(tTime)
 
 			var ll s2.LatLng
-			if Case.FIPS == "" {
+
 				// validate data a bit ...
+				if Case.Country == "" {
+					Case.Country = Case.Country2
+				}
+				if Case.Province == "" {
+					Case.Province = Case.Province2
+				}
+				if Case.Lat != "" {
+					Case.Latitude = Case.Lat
+				}
+				if Case.Long != "" {
+					Case.Longitude = Case.Long
+				}
 				Case.Country = cleanStrings(Case.Country)
 				if Case.Country == "Northern Ireland" {
 					Case.Province = Case.Country
@@ -324,44 +288,16 @@ func main() {
 					check(err)
 
 				} else if gClient != nil && !fail {
-					ll = geoCode(gClient, Case.Country, Case.Province, "")
+					ll, err = geoCode(gClient, Case.Country, Case.Province, "")
+					if err != nil {
+						fmt.Println("WTAF??")
+					}
 					latitude = ll.Lat.Degrees()
 					longitude = ll.Lng.Degrees()
 				} else {
 					latitude = 0.00
 					longitude = 0.00
 				}
-			} else { // Case2
-				Case.Country2 = cleanStrings(Case.Country2)
-				if Case.Country2 == "Northern Ireland" {
-					Case.Province2 = Case.Country2
-					Case.Country2 = "UK"
-				}
-				if Case.Country2 == "Macao" {
-					Case.Province2 = "Macao"
-				}
-				Case.Province2 = strings.ReplaceAll(Case.Province2, `"`, ``)
-				Case.Country2 = strings.ReplaceAll(Case.Country2, `"`, ``)
-				fail := strings.Contains(strings.ToLower(Case.Country2), strings.ToLower("Diamond"))
-				fail = strings.Contains(strings.ToLower(Case.Country2), strings.ToLower("Cruise"))
-				fail = strings.Contains(strings.ToLower(Case.Country2), strings.ToLower("others"))
-				//	fail = strings.Contains(strings.ToLower(Case.Province2+" "+Case.Country2), strings.ToLower("Other"))
-
-				if Case.Lat != "" {
-					latitude, err = strconv.ParseFloat(Case.Lat, 64)
-					check(err)
-					longitude, err = strconv.ParseFloat(Case.Long, 64)
-					check(err)
-				} else if gClient != nil && !fail {
-					ll = geoCode(gClient, Case.Country2, Case.Province2, Case.Admin2)
-					latitude = ll.Lat.Degrees()
-					longitude = ll.Lng.Degrees()
-				} else {
-					latitude = 0.00
-					longitude = 0.00
-				}
-
-			} // end case2
 			// fix any data issues ...
 			if Case.Confirmed != "" {
 				confirmed, err = strconv.Atoi(Case.Confirmed)
@@ -450,6 +386,11 @@ func main() {
 		err = scanner.Error()
 		check(err)
 		dataFile.Close()
+		if options.Split != "" {
+			outPrint(myMetrics)
+			batchCount = 0
+
+		}
 
 	}
 	if batchCount > 0 {
@@ -471,7 +412,6 @@ func main() {
 
 }
 
-
 func cleanStrings(input string) string {
 
 	if input != "" {
@@ -484,10 +424,10 @@ func cleanStrings(input string) string {
 		return "Vietnam"
 	}
 	if input == "Korea, South" {
-		return  "South Korea"
+		return "South Korea"
 	}
 	if input == "Hong Kong SAR" || input == "Hong Kong" {
-		return  "Hong Kong"
+		return "Hong Kong"
 	}
 	if input == "Macau SAR" || input == "Macau" {
 		return "Macao"
@@ -520,10 +460,8 @@ func getS2Id(latlng s2.LatLng) string {
 func outPrint(data []protocol.Metric) {
 	var serializer *protocol.Encoder
 	var dataFile *os.File
-
 	if options.File == "stdout" {
 		dataFile = os.Stdout
-
 	} else {
 		_, err := os.Stat(options.File)
 		if os.IsNotExist(err) {
@@ -587,7 +525,7 @@ func finish() {
 	check(envFile.Close())
 	runtime()
 }
-func geoCode(client *maps.Client, country string, province string, admin string) s2.LatLng {
+func geoCode(client *maps.Client, country string, province string, admin string) (s2.LatLng, error) {
 	var address = make(map[maps.Component]string)
 
 	if country != "" {
@@ -598,7 +536,7 @@ func geoCode(client *maps.Client, country string, province string, admin string)
 	if strings.Contains(strings.ToLower(p), strings.ToLower("diamond")) || strings.Contains(strings.ToLower(p), strings.ToLower("cruise")) {
 		p = ""
 	}
-	if strings.Contains(strings.ToLower(p), "none") {
+	if strings.Contains(strings.ToLower(p), "none") || strings.Contains(strings.ToLower(p), "external"){
 		p = ""
 	}
 	if admin != "" {
@@ -623,12 +561,15 @@ func geoCode(client *maps.Client, country string, province string, admin string)
 		}
 	}
 	resp, err := client.Geocode(context.TODO(), r)
-	check(err)
+	if err != nil {
+		printIt(fmt.Sprintf("FAILED: Province:\t%s\t Country:\t%s\n", province, country))
+		return s2.LatLngFromDegrees(0.00, 0.00), err
+	}
 	if len(resp) < 1 {
 		printIt(fmt.Sprintf("FAILED: Province:\t%s\t Country:\t%s\n", province, country))
-		return s2.LatLngFromDegrees(0.00, 0.00)
+		return s2.LatLngFromDegrees(0.00, 0.00), nil
 	}
-	return s2.LatLngFromDegrees(resp[0].Geometry.Location.Lat, resp[0].Geometry.Location.Lng)
+	return s2.LatLngFromDegrees(resp[0].Geometry.Location.Lat, resp[0].Geometry.Location.Lng), nil
 
 }
 
@@ -645,4 +586,86 @@ func decipherTime(myTime string) string {
 		}
 	}
 	return t.String()
+}
+// streamlined error handling
+func check(e error) {
+	if e != nil {
+		runtime()
+		log.Fatal(e)
+	}
+}
+
+// how long the process took
+func runtime() {
+	t1 := time.Now()
+	// Get duration.
+	d := t1.Sub(start)
+	fmt.Print("Total Runtime ")
+	if int64(d.Hours()) > 0 {
+		printIt(fmt.Sprintf("%0.0f Hours, ", d.Hours()))
+		printIt(fmt.Sprintf("%0.0f Minutes, ", d.Minutes()/60))
+		secs := d.Seconds() / 60.00
+		printIt(fmt.Sprintf("%0.2f Seconds\n", secs))
+		return
+	}
+	if int64(d.Minutes()) > 0.00 {
+		printIt(fmt.Sprintf("%0.0f Minutes, ", d.Minutes()))
+		secs := d.Seconds() / 60.00
+		printIt(fmt.Sprintf("%0.2f Seconds\n", secs))
+		return
+	}
+	if int64(d.Seconds()) > 0 {
+		printIt(fmt.Sprintf("%0.2f Seconds \n", d.Seconds()))
+	} else {
+		printIt(fmt.Sprintf("%d Milliseconds\n", d.Milliseconds()))
+	}
+}
+
+func printIt(m string) {
+	if options.Out && options.File == "stdout" {
+		fmt.Fprintf(os.Stderr, m)
+	} else {
+		fmt.Print(m)
+	}
+}
+
+// usage
+func usage(e string) {
+
+	printIt("\nUsage:\n")
+	printIt("\t-dir:\t Path to where the .csv data files live. Default is . (current Directory)\n")
+	printIt("\t-url:\tURL of your InfluxDB server, including port. (default: http://localhos:9999)\n")
+	printIt("\t-bucket:\tBucket name -- no default, REQUIRED\n")
+	printIt("\t-organization:\tOrganization name -- no default, REQUIRED\n")
+	printIt("\t-measurement:\tMeasurement name -- no default, REQUIRED\n")
+	printIt("\t-token:\tInfluxDB Token -- no default, REQUIRED\n")
+	printIt("\t-out:\tWrite line-protocol to stdout or -outfile \n")
+	printIt("\t-outfile\tfile for line-protocol output. -- default is ./output.lp\n")
+	printIt("\t-gtoken:\tGoogle Maps API Token if you want to reverse-encode missing location data\n")
+	printIt("\n")
+	check(errors.New(e))
+}
+
+// filter the files to make sure we only get .csv files, and only after the 'last run' time
+func filterFiles(dir, suffix string, before int64) ([]string, error) {
+	files, err := ioutil.ReadDir(dir)
+	if err != nil {
+		return nil, err
+	}
+	res := make([]string, len(files))
+	count := 0
+	dt := time.Now().Unix()
+	fmt.Println(dt)
+	for _, f := range files {
+		if !f.IsDir() && strings.HasSuffix(f.Name(), suffix) {
+			n := strings.TrimSuffix(f.Name(), ".csv")
+			d, err := time.Parse(RFC3339FileDate, n)
+			check(err)
+			if f.ModTime().Unix() > before && d.Unix() > before {
+				res[count] = f.Name()
+				count++
+			}
+		}
+	}
+	return res, nil
 }
