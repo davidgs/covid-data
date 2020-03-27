@@ -32,10 +32,24 @@ Usage:
         -a --apitoken:    Google Maps API Token -- default: $MAPS_TOKEN
         -o --out          Output line-protocol to stdout
         -f --file         file to output line-protocol to (must use -o as well)
+        -s --split        split line-protocol files up by dates default directory: ./data
 
 `$ go build covid.go`
 
 `$ ./covid dir path/to/data -b bucket_name -g org_name measurement measure_name -url http://your.server.com:9999 -token yourToken`
+
+`$ ./covid -dir path/to/data -s=data`
+
+Notice that if you're sending it to files, you don't need the InfluxDB credentials, etc. This last command will create the following:
+
+```
+├── data
+│   ├── 01-22-2020.lp
+│   ├── 01-23-2020.lp
+
+...
+```
+with one output line-protocol file for each input csv file.
 
 Notice that you can use flags with or without the `-` or a `--` if you choose.
 
