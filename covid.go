@@ -243,7 +243,6 @@ func main() {
 
 			err := scanner.Populate(&Case)
 			check(err)
-			var t time.Time
 			var tTime string
 			// nested date processing because of format changes
 			if Case.LastUpdate != "" {
@@ -336,9 +335,8 @@ func main() {
 						"state_province": Case.Province,
 						"country_region": Case.Country,
 						"s2_cell_id":     cell,
-						"last_update":    stringTime,
 					},
-					t)
+					stringTime)
 				myMetrics = append(myMetrics, row)
 				batchCount++
 				//}
@@ -357,11 +355,10 @@ func main() {
 						"state_province": Case.Province2,
 						"country_region": Case.Country2,
 						"fips":           Case.FIPS,
-						"last_update":    stringTime,
 						"s2_cell_id":     cell,
 						"combined_tag":   Case.Combined,
 					},
-					t)
+					stringTime)
 				//}
 				myMetrics = append(myMetrics, row)
 				batchCount++
@@ -573,7 +570,7 @@ func geoCode(client *maps.Client, country string, province string, admin string)
 
 }
 
-func decipherTime(myTime string) string {
+func decipherTime(myTime string) time.Time {
 	t, err := time.Parse(RFC3339NewDate, myTime)
 	if err != nil {
 		t, err = time.Parse(RFC3339FullDate, myTime)
@@ -585,7 +582,7 @@ func decipherTime(myTime string) string {
 			}
 		}
 	}
-	return t.String()
+	return t
 }
 // streamlined error handling
 func check(e error) {
@@ -654,8 +651,6 @@ func filterFiles(dir, suffix string, before int64) ([]string, error) {
 	}
 	res := make([]string, len(files))
 	count := 0
-	dt := time.Now().Unix()
-	fmt.Println(dt)
 	for _, f := range files {
 		if !f.IsDir() && strings.HasSuffix(f.Name(), suffix) {
 			n := strings.TrimSuffix(f.Name(), ".csv")
