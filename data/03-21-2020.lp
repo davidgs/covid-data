@@ -7615,3 +7615,307 @@ covid-19,country_region=Puerto\ Rico confirmed=0i,deaths=0i,lat=18.2,lon=-66.5,r
 covid-19,country_region=Republic\ of\ the\ Congo confirmed=0i,deaths=0i,lat=-1.44,lon=15.556,recovered=0i 1584480783000000000
 covid-19,country_region=The\ Bahamas confirmed=0i,deaths=0i,lat=24.25,lon=-76,recovered=0i 1584620018000000000
 covid-19,country_region=The\ Gambia confirmed=0i,deaths=0i,lat=13.4667,lon=-16.6,recovered=0i 1584540836000000000
+covid-19,country_region=China,state_province=Hubei confirmed=67800i,deaths=3139i,lat=30.9756,lon=112.2707,recovered=58946i 1584785588000000000
+covid-19,country_region=Italy confirmed=53578i,deaths=4825i,lat=41.8719,lon=12.5674,recovered=6072i 1584812583000000000
+covid-19,country_region=Spain confirmed=25374i,deaths=1375i,lat=40.4637,lon=-3.7492,recovered=2125i 1584796410000000000
+covid-19,country_region=Germany confirmed=22213i,deaths=84i,lat=51.1657,lon=10.4515,recovered=233i 1584823382000000000
+covid-19,country_region=Iran confirmed=20610i,deaths=1556i,lat=32.4279,lon=53.688,recovered=7635i 1584789192000000000
+covid-19,country_region=France,state_province=France confirmed=14282i,deaths=562i,lat=46.2276,lon=2.2137,recovered=12i 1584823382000000000
+covid-19,country_region=US,state_province=New\ York confirmed=11710i,deaths=60i,lat=42.1657,lon=-74.9481,recovered=0i 1584830584000000000
+covid-19,country_region=South\ Korea confirmed=8799i,deaths=102i,lat=35.9078,lon=127.7669,recovered=1540i 1584789192000000000
+covid-19,country_region=Switzerland confirmed=6575i,deaths=75i,lat=46.8182,lon=8.2275,recovered=15i 1584823382000000000
+covid-19,country_region=United\ Kingdom,state_province=United\ Kingdom confirmed=5018i,deaths=233i,lat=55.3781,lon=-3.436,recovered=65i 1584823383000000000
+covid-19,country_region=Netherlands,state_province=Netherlands confirmed=3631i,deaths=136i,lat=52.1326,lon=5.2913,recovered=2i 1584801784000000000
+covid-19,country_region=Belgium confirmed=2815i,deaths=67i,lat=50.5039,lon=4.4699,recovered=263i 1584789192000000000
+covid-19,country_region=Austria confirmed=2814i,deaths=8i,lat=47.5162,lon=14.5501,recovered=9i 1584801783000000000
+covid-19,country_region=Norway confirmed=2118i,deaths=7i,lat=60.472,lon=8.4689,recovered=1i 1584810787000000000
+covid-19,country_region=US,state_province=Washington confirmed=1793i,deaths=94i,lat=47.4009,lon=-121.4905,recovered=0i 1584830584000000000
+covid-19,country_region=Sweden confirmed=1763i,deaths=20i,lat=60.1282,lon=18.6435,recovered=16i 1584801783000000000
+covid-19,country_region=China,state_province=Guangdong confirmed=1400i,deaths=8i,lat=23.3417,lon=113.4244,recovered=1325i 1584794588000000000
+covid-19,country_region=US,state_province=California confirmed=1364i,deaths=24i,lat=36.1162,lon=-119.6816,recovered=0i 1584830584000000000
+covid-19,country_region=US,state_province=New\ Jersey confirmed=1327i,deaths=16i,lat=40.2989,lon=-74.521,recovered=0i 1584819783000000000
+covid-19,country_region=Denmark,state_province=Denmark confirmed=1326i,deaths=13i,lat=56.2639,lon=9.5018,recovered=1i 1584794588000000000
+covid-19,country_region=Portugal confirmed=1280i,deaths=12i,lat=39.3999,lon=-8.2245,recovered=5i 1584796410000000000
+covid-19,country_region=China,state_province=Henan confirmed=1273i,deaths=22i,lat=33.882,lon=113.614,recovered=1250i 1584179588000000000
+covid-19,country_region=China,state_province=Zhejiang confirmed=1236i,deaths=1i,lat=29.1832,lon=120.0934,recovered=1219i 1584762183000000000
+covid-19,country_region=Malaysia confirmed=1183i,deaths=4i,lat=4.2105,lon=101.9758,recovered=114i 1584790986000000000
+covid-19,country_region=Brazil confirmed=1021i,deaths=15i,lat=-14.235,lon=-51.9253,recovered=2i 1584812583000000000
+covid-19,country_region=China,state_province=Hunan confirmed=1018i,deaths=4i,lat=27.6104,lon=111.7088,recovered=1014i 1584174783000000000
+covid-19,country_region=Japan confirmed=1007i,deaths=35i,lat=36.2048,lon=138.2529,recovered=232i 1584823382000000000
+covid-19,country_region=Czechia confirmed=995i,deaths=0i,lat=49.8175,lon=15.473,recovered=6i 1584823382000000000
+covid-19,country_region=China,state_province=Anhui confirmed=990i,deaths=6i,lat=31.8257,lon=117.2264,recovered=984i 1583893094000000000
+covid-19,country_region=China,state_province=Jiangxi confirmed=935i,deaths=1i,lat=27.614,lon=115.7221,recovered=934i 1583979184000000000
+covid-19,country_region=Israel confirmed=883i,deaths=1i,lat=31.0461,lon=34.8516,recovered=36i 1584790986000000000
+covid-19,country_region=US,state_province=Michigan confirmed=788i,deaths=5i,lat=43.3266,lon=-84.5361,recovered=0i 1584830584000000000
+covid-19,country_region=Ireland confirmed=785i,deaths=3i,lat=53.1424,lon=-7.6921,recovered=5i 1584823382000000000
+covid-19,country_region=China,state_province=Shandong confirmed=764i,deaths=7i,lat=36.3427,lon=118.1498,recovered=749i 1584751382000000000
+covid-19,country_region=US,state_province=Illinois confirmed=753i,deaths=6i,lat=40.3495,lon=-88.9861,recovered=0i 1584832398000000000
+covid-19,country_region=Pakistan confirmed=730i,deaths=3i,lat=30.3753,lon=69.3451,recovered=13i 1584821601000000000
+covid-19,country_region=Cruise\ Ship,state_province=Diamond\ Princess confirmed=712i,deaths=8i,lat=35.4498,lon=139.6649,recovered=325i 1584756812000000000
+covid-19,country_region=Luxembourg confirmed=670i,deaths=8i,lat=49.8153,lon=6.1296,recovered=0i 1584796410000000000
+covid-19,country_region=Turkey confirmed=670i,deaths=9i,lat=38.9637,lon=35.2433,recovered=0i 1584754983000000000
+covid-19,country_region=US,state_province=Florida confirmed=659i,deaths=13i,lat=27.7663,lon=-81.6868,recovered=0i 1584832398000000000
+covid-19,country_region=China,state_province=Jiangsu confirmed=631i,deaths=0i,lat=32.9711,lon=119.455,recovered=631i 1584237182000000000
+covid-19,country_region=US,state_province=Louisiana confirmed=585i,deaths=16i,lat=31.1695,lon=-91.8678,recovered=0i 1584805385000000000
+covid-19,country_region=US,state_province=Texas confirmed=581i,deaths=5i,lat=31.0545,lon=-97.5635,recovered=0i 1584832397000000000
+covid-19,country_region=China,state_province=Chongqing confirmed=576i,deaths=6i,lat=30.0572,lon=107.874,recovered=570i 1584244384000000000
+covid-19,country_region=China,state_province=Sichuan confirmed=542i,deaths=3i,lat=30.6171,lon=102.7103,recovered=536i 1584753191000000000
+covid-19,country_region=Chile confirmed=537i,deaths=0i,lat=-35.6751,lon=-71.543,recovered=6i 1584801783000000000
+covid-19,country_region=Poland confirmed=536i,deaths=5i,lat=51.9194,lon=19.1451,recovered=1i 1584823382000000000
+covid-19,country_region=Greece confirmed=530i,deaths=13i,lat=39.0742,lon=21.8243,recovered=19i 1584812583000000000
+covid-19,country_region=US,state_province=Massachusetts confirmed=525i,deaths=1i,lat=42.2302,lon=-71.5301,recovered=0i 1584832398000000000
+covid-19,country_region=Finland confirmed=523i,deaths=1i,lat=61.9241,lon=25.7482,recovered=10i 1584823382000000000
+covid-19,country_region=US,state_province=Georgia confirmed=507i,deaths=14i,lat=33.0406,lon=-83.6431,recovered=0i 1584812583000000000
+covid-19,country_region=Ecuador confirmed=506i,deaths=7i,lat=-1.8312,lon=-78.1834,recovered=3i 1584823382000000000
+covid-19,country_region=China,state_province=Beijing confirmed=504i,deaths=8i,lat=40.1824,lon=116.4142,recovered=396i 1584767584000000000
+covid-19,country_region=China,state_province=Heilongjiang confirmed=484i,deaths=13i,lat=47.862,lon=127.7615,recovered=463i 1584670426000000000
+covid-19,country_region=Qatar confirmed=481i,deaths=0i,lat=25.3548,lon=51.1839,recovered=27i 1584823382000000000
+covid-19,country_region=Iceland confirmed=473i,deaths=1i,lat=64.9631,lon=-19.0208,recovered=22i 1584810798000000000
+covid-19,country_region=Indonesia confirmed=450i,deaths=38i,lat=-0.7893,lon=113.9213,recovered=15i 1584790986000000000
+covid-19,country_region=Australia,state_province=New\ South\ Wales confirmed=436i,deaths=6i,lat=-33.8688,lon=151.2093,recovered=4i 1584796415000000000
+covid-19,country_region=Singapore confirmed=432i,deaths=2i,lat=1.3521,lon=103.8198,recovered=140i 1584796410000000000
+covid-19,country_region=Canada,state_province=British\ Columbia confirmed=424i,deaths=10i,lat=53.7267,lon=-127.6476,recovered=4i 1584825210000000000
+covid-19,country_region=Thailand confirmed=411i,deaths=1i,lat=15.87,lon=100.9925,recovered=42i 1584792799000000000
+covid-19,country_region=US,state_province=Pennsylvania confirmed=396i,deaths=2i,lat=40.5908,lon=-77.2098,recovered=0i 1584832397000000000
+covid-19,country_region=Saudi\ Arabia confirmed=392i,deaths=0i,lat=23.8859,lon=45.0792,recovered=16i 1584801783000000000
+covid-19,country_region=US,state_province=Colorado confirmed=390i,deaths=4i,lat=39.0598,lon=-105.3111,recovered=0i 1584832398000000000
+covid-19,country_region=Slovenia confirmed=383i,deaths=1i,lat=46.1512,lon=14.9955,recovered=0i 1584801783000000000
+covid-19,country_region=China,state_province=Shanghai confirmed=380i,deaths=3i,lat=31.202,lon=121.4491,recovered=327i 1584765786000000000
+covid-19,country_region=Canada,state_province=Ontario confirmed=377i,deaths=3i,lat=51.2538,lon=-85.3232,recovered=6i 1584825210000000000
+covid-19,country_region=US,state_province=Tennessee confirmed=371i,deaths=1i,lat=35.7478,lon=-86.6923,recovered=0i 1584832398000000000
+covid-19,country_region=Romania confirmed=367i,deaths=0i,lat=45.9432,lon=24.9668,recovered=52i 1584796412000000000
+covid-19,country_region=India confirmed=330i,deaths=4i,lat=20.5937,lon=78.9629,recovered=23i 1584812583000000000
+covid-19,country_region=China,state_province=Hebei confirmed=318i,deaths=6i,lat=38.0428,lon=114.5149,recovered=310i 1584097743000000000
+covid-19,country_region=Peru confirmed=318i,deaths=5i,lat=-9.19,lon=-75.0152,recovered=1i 1584823382000000000
+covid-19,country_region=Philippines confirmed=307i,deaths=19i,lat=12.8797,lon=121.774,recovered=13i 1584792799000000000
+covid-19,country_region=Estonia confirmed=306i,deaths=0i,lat=58.5953,lon=25.0136,recovered=1i 1584792799000000000
+covid-19,country_region=Russia confirmed=306i,deaths=1i,lat=61.524,lon=105.3188,recovered=12i 1584801783000000000
+covid-19,country_region=Bahrain confirmed=305i,deaths=1i,lat=26.0667,lon=50.5577,recovered=125i 1584812583000000000
+covid-19,country_region=China,state_province=Fujian confirmed=303i,deaths=1i,lat=26.0789,lon=117.9874,recovered=295i 1584753190000000000
+covid-19,country_region=Egypt confirmed=294i,deaths=10i,lat=26.8206,lon=30.8025,recovered=41i 1584823382000000000
+covid-19,country_region=US,state_province=Wisconsin confirmed=282i,deaths=4i,lat=44.2685,lon=-89.6165,recovered=0i 1584832398000000000
+covid-19,country_region=China,state_province=Hong\ Kong confirmed=273i,deaths=4i,lat=22.3,lon=114.2,recovered=98i 1584781994000000000
+covid-19,country_region=China,state_province=Guangxi confirmed=254i,deaths=2i,lat=23.8298,lon=108.7881,recovered=250i 1584664982000000000
+covid-19,country_region=US,state_province=North\ Carolina confirmed=253i,deaths=0i,lat=35.6301,lon=-79.8064,recovered=0i 1584832398000000000
+covid-19,country_region=China,state_province=Shaanxi confirmed=248i,deaths=3i,lat=35.1917,lon=108.8701,recovered=239i 1584754983000000000
+covid-19,country_region=US,state_province=Ohio confirmed=248i,deaths=3i,lat=40.3888,lon=-82.7649,recovered=0i 1584819783000000000
+covid-19,country_region=South\ Africa confirmed=240i,deaths=0i,lat=-30.5595,lon=22.9375,recovered=0i 1584792799000000000
+covid-19,country_region=Australia,state_province=Victoria confirmed=229i,deaths=0i,lat=-37.8136,lon=144.9631,recovered=8i 1584796415000000000
+covid-19,country_region=Australia,state_province=Queensland confirmed=221i,deaths=0i,lat=-28.0167,lon=153.4,recovered=8i 1584796415000000000
+covid-19,country_region=Iraq confirmed=214i,deaths=17i,lat=33.2232,lon=43.6793,recovered=51i 1584812583000000000
+covid-19,country_region=Croatia confirmed=206i,deaths=1i,lat=45.1,lon=15.2,recovered=5i 1584812583000000000
+covid-19,country_region=Mexico confirmed=203i,deaths=2i,lat=23.6345,lon=-102.5528,recovered=4i 1584792799000000000
+covid-19,country_region=Panama confirmed=200i,deaths=1i,lat=8.538,lon=-80.7821,recovered=0i 1584756812000000000
+covid-19,country_region=Colombia confirmed=196i,deaths=0i,lat=4.5709,lon=-74.2973,recovered=1i 1584812583000000000
+covid-19,country_region=Canada,state_province=Alberta confirmed=195i,deaths=1i,lat=53.9333,lon=-116.5765,recovered=0i 1584758583000000000
+covid-19,country_region=US,state_province=Connecticut confirmed=194i,deaths=4i,lat=41.5978,lon=-72.7554,recovered=0i 1584758583000000000
+covid-19,country_region=US,state_province=Maryland confirmed=193i,deaths=2i,lat=39.0639,lon=-76.8021,recovered=0i 1584832398000000000
+covid-19,country_region=Lebanon confirmed=187i,deaths=4i,lat=33.8547,lon=35.8623,recovered=4i 1584792799000000000
+covid-19,country_region=Canada,state_province=Quebec confirmed=181i,deaths=5i,lat=52.9399,lon=-73.5491,recovered=0i 1584825210000000000
+covid-19,country_region=Slovakia confirmed=178i,deaths=1i,lat=48.669,lon=19.699,recovered=0i 1584823382000000000
+covid-19,country_region=China,state_province=Yunnan confirmed=176i,deaths=2i,lat=24.974,lon=101.487,recovered=172i 1584402782000000000
+covid-19,country_region=Kuwait confirmed=176i,deaths=0i,lat=29.3117,lon=47.4818,recovered=27i 1584792799000000000
+covid-19,country_region=Serbia confirmed=171i,deaths=1i,lat=44.0165,lon=21.0059,recovered=1i 1584823382000000000
+covid-19,country_region=US,state_province=South\ Carolina confirmed=171i,deaths=3i,lat=33.8569,lon=-80.945,recovered=0i 1584832397000000000
+covid-19,country_region=China,state_province=Hainan confirmed=168i,deaths=6i,lat=19.1959,lon=109.7453,recovered=161i 1584369525000000000
+covid-19,country_region=Bulgaria confirmed=163i,deaths=3i,lat=42.7339,lon=25.4858,recovered=3i 1584812583000000000
+covid-19,country_region=US,state_province=Nevada confirmed=161i,deaths=2i,lat=38.3135,lon=-117.0554,recovered=0i 1584758583000000000
+covid-19,country_region=Armenia confirmed=160i,deaths=0i,lat=40.0691,lon=45.0382,recovered=1i 1584792799000000000
+covid-19,country_region=Argentina confirmed=158i,deaths=4i,lat=-38.4161,lon=-63.6167,recovered=3i 1584803624000000000
+covid-19,country_region=US,state_province=Virginia confirmed=156i,deaths=2i,lat=37.7693,lon=-78.17,recovered=0i 1584819783000000000
+covid-19,country_region=Taiwan* confirmed=153i,deaths=2i,lat=23.7,lon=121,recovered=28i 1584776582000000000
+covid-19,country_region=United\ Arab\ Emirates confirmed=153i,deaths=2i,lat=23.4241,lon=53.8478,recovered=38i 1584812583000000000
+covid-19,country_region=China,state_province=Guizhou confirmed=146i,deaths=2i,lat=26.8154,lon=106.8748,recovered=144i 1584496383000000000
+covid-19,country_region=San\ Marino confirmed=144i,deaths=20i,lat=43.9424,lon=12.4578,recovered=4i 1584812583000000000
+covid-19,country_region=US,state_province=Mississippi confirmed=140i,deaths=1i,lat=32.7416,lon=-89.6787,recovered=0i 1584810824000000000
+covid-19,country_region=Algeria confirmed=139i,deaths=15i,lat=28.0339,lon=1.6596,recovered=32i 1584812583000000000
+covid-19,country_region=US,state_province=Minnesota confirmed=138i,deaths=1i,lat=45.6945,lon=-93.9002,recovered=0i 1584819783000000000
+covid-19,country_region=China,state_province=Tianjin confirmed=137i,deaths=3i,lat=39.3054,lon=117.323,recovered=133i 1584661383000000000
+covid-19,country_region=US,state_province=Utah confirmed=136i,deaths=0i,lat=40.15,lon=-111.8624,recovered=0i 1584832397000000000
+covid-19,country_region=China,state_province=Gansu confirmed=134i,deaths=2i,lat=36.0611,lon=103.8343,recovered=113i 1584760393000000000
+covid-19,country_region=China,state_province=Shanxi confirmed=133i,deaths=0i,lat=37.5777,lon=112.2922,recovered=133i 1584097743000000000
+covid-19,country_region=US,state_province=Alabama confirmed=131i,deaths=0i,lat=32.3182,lon=-86.9023,recovered=0i 1584832398000000000
+covid-19,country_region=US,state_province=Indiana confirmed=128i,deaths=4i,lat=39.8494,lon=-86.2583,recovered=0i 1584832398000000000
+covid-19,country_region=China,state_province=Liaoning confirmed=126i,deaths=2i,lat=41.2956,lon=122.6085,recovered=122i 1584668583000000000
+covid-19,country_region=Latvia confirmed=124i,deaths=0i,lat=56.8796,lon=24.6032,recovered=1i 1584792799000000000
+covid-19,country_region=US,state_province=Arkansas confirmed=122i,deaths=0i,lat=34.9697,lon=-92.3731,recovered=0i 1584832397000000000
+covid-19,country_region=US,state_province=Arizona confirmed=118i,deaths=1i,lat=33.7298,lon=-111.4312,recovered=0i 1584832398000000000
+covid-19,country_region=Costa\ Rica confirmed=117i,deaths=2i,lat=9.7489,lon=-83.7534,recovered=2i 1584823382000000000
+covid-19,country_region=US,state_province=Oregon confirmed=114i,deaths=5i,lat=44.572,lon=-122.0709,recovered=0i 1584832398000000000
+covid-19,country_region=Dominican\ Republic confirmed=112i,deaths=2i,lat=18.7357,lon=-70.1627,recovered=0i 1584803625000000000
+covid-19,country_region=Uruguay confirmed=110i,deaths=0i,lat=-32.5228,lon=-55.7658,recovered=0i 1584792799000000000
+covid-19,country_region=Hungary confirmed=103i,deaths=4i,lat=47.1625,lon=19.5033,recovered=7i 1584792799000000000
+covid-19,country_region=Morocco confirmed=96i,deaths=3i,lat=31.7917,lon=-7.0926,recovered=3i 1584823382000000000
+covid-19,country_region=Vietnam confirmed=94i,deaths=0i,lat=14.0583,lon=108.2772,recovered=17i 1584812583000000000
+covid-19,country_region=Bosnia\ and\ Herzegovina confirmed=93i,deaths=1i,lat=43.9159,lon=17.6791,recovered=2i 1584812583000000000
+covid-19,country_region=China,state_province=Jilin confirmed=93i,deaths=1i,lat=43.6661,lon=126.1923,recovered=92i 1584318130000000000
+covid-19,country_region=Denmark,state_province=Faroe\ Islands confirmed=92i,deaths=0i,lat=61.8926,lon=-6.9118,recovered=0i 1584794588000000000
+covid-19,country_region=Australia,state_province=Western\ Australia confirmed=90i,deaths=1i,lat=-31.9505,lon=115.8605,recovered=0i 1584796415000000000
+covid-19,country_region=Andorra confirmed=88i,deaths=0i,lat=42.5063,lon=1.5218,recovered=1i 1584803625000000000
+covid-19,country_region=US,state_province=Kentucky confirmed=87i,deaths=3i,lat=37.6681,lon=-84.6701,recovered=0i 1584832397000000000
+covid-19,country_region=Jordan confirmed=85i,deaths=0i,lat=30.5852,lon=36.2384,recovered=1i 1584736982000000000
+covid-19,country_region=North\ Macedonia confirmed=85i,deaths=0i,lat=41.6086,lon=21.7453,recovered=1i 1584812583000000000
+covid-19,country_region=Cyprus confirmed=84i,deaths=0i,lat=35.1264,lon=33.4299,recovered=0i 1584812583000000000
+covid-19,country_region=Brunei confirmed=83i,deaths=0i,lat=4.5353,lon=114.7277,recovered=2i 1584794588000000000
+covid-19,country_region=Lithuania confirmed=83i,deaths=1i,lat=55.1694,lon=23.8813,recovered=1i 1584812583000000000
+covid-19,country_region=Moldova confirmed=80i,deaths=1i,lat=47.4116,lon=28.3699,recovered=1i 1584812583000000000
+covid-19,country_region=Sri\ Lanka confirmed=77i,deaths=0i,lat=7.8731,lon=80.7718,recovered=1i 1584812583000000000
+covid-19,country_region=US,state_province=District\ of\ Columbia confirmed=98i,deaths=1i,lat=38.8974,lon=-77.0268,recovered=0i 1584758583000000000
+covid-19,country_region=Albania confirmed=76i,deaths=2i,lat=41.1533,lon=20.1683,recovered=2i 1584794588000000000
+covid-19,country_region=Belarus confirmed=76i,deaths=0i,lat=53.7098,lon=27.9534,recovered=15i 1584823383000000000
+covid-19,country_region=China,state_province=Xinjiang confirmed=76i,deaths=3i,lat=41.1129,lon=85.2401,recovered=73i 1583893094000000000
+covid-19,country_region=China,state_province=Inner\ Mongolia confirmed=75i,deaths=1i,lat=44.0935,lon=113.9448,recovered=74i 1584579782000000000
+covid-19,country_region=China,state_province=Ningxia confirmed=75i,deaths=0i,lat=37.2692,lon=106.1655,recovered=75i 1584369525000000000
+covid-19,country_region=US,state_province=Missouri confirmed=74i,deaths=3i,lat=38.4561,lon=-92.2884,recovered=0i 1584812583000000000
+covid-19,country_region=Malta confirmed=73i,deaths=0i,lat=35.9375,lon=14.3754,recovered=2i 1584803625000000000
+covid-19,country_region=US,state_province=Maine confirmed=70i,deaths=0i,lat=44.6939,lon=-69.3819,recovered=0i 1584832398000000000
+covid-19,country_region=Venezuela confirmed=70i,deaths=0i,lat=6.4238,lon=-66.5897,recovered=0i 1584823383000000000
+covid-19,country_region=US,state_province=Iowa confirmed=68i,deaths=0i,lat=42.0115,lon=-93.2105,recovered=0i 1584819783000000000
+covid-19,country_region=Australia,state_province=South\ Australia confirmed=67i,deaths=0i,lat=-34.9285,lon=138.6007,recovered=3i 1584796415000000000
+covid-19,country_region=US,state_province=Rhode\ Island confirmed=66i,deaths=0i,lat=41.6809,lon=-71.5118,recovered=0i 1584819783000000000
+covid-19,country_region=Burkina\ Faso confirmed=64i,deaths=2i,lat=12.2383,lon=-1.5616,recovered=5i 1584796412000000000
+covid-19,country_region=Tunisia confirmed=60i,deaths=1i,lat=33.8869,lon=9.5375,recovered=0i 1584803625000000000
+covid-19,country_region=US,state_province=Kansas confirmed=57i,deaths=2i,lat=38.5266,lon=-96.7265,recovered=0i 1584832398000000000
+covid-19,country_region=US,state_province=New\ Hampshire confirmed=55i,deaths=0i,lat=43.4525,lon=-71.5639,recovered=0i 1584749602000000000
+covid-19,country_region=Azerbaijan confirmed=53i,deaths=1i,lat=40.1431,lon=47.5769,recovered=11i 1584823383000000000
+covid-19,country_region=Cambodia confirmed=53i,deaths=0i,lat=12.5657,lon=104.991,recovered=1i 1584812583000000000
+covid-19,country_region=Guadeloupe confirmed=53i,deaths=0i,lat=16.265,lon=-61.551,recovered=0i 1584796415000000000
+covid-19,country_region=Kazakhstan confirmed=53i,deaths=0i,lat=48.0196,lon=66.9237,recovered=0i 1584794588000000000
+covid-19,country_region=US,state_province=Oklahoma confirmed=53i,deaths=1i,lat=35.5653,lon=-96.9289,recovered=0i 1584812583000000000
+covid-19,country_region=New\ Zealand confirmed=52i,deaths=0i,lat=-40.9006,lon=174.886,recovered=0i 1584756812000000000
+covid-19,country_region=Oman confirmed=52i,deaths=0i,lat=21.4735,lon=55.9754,recovered=12i 1584794588000000000
+covid-19,country_region=Georgia confirmed=49i,deaths=0i,lat=42.3154,lon=43.3569,recovered=1i 1584812583000000000
+covid-19,country_region=Trinidad\ and\ Tobago confirmed=49i,deaths=0i,lat=10.6918,lon=-61.2225,recovered=1i 1584812583000000000
+covid-19,country_region=US,state_province=Diamond\ Princess confirmed=49i,deaths=0i,lat=35.4437,lon=139.638,recovered=0i 1584733383000000000
+covid-19,country_region=Senegal confirmed=47i,deaths=0i,lat=14.4974,lon=-14.4524,recovered=5i 1584754983000000000
+covid-19,country_region=Ukraine confirmed=47i,deaths=3i,lat=48.3794,lon=31.1656,recovered=1i 1584825190000000000
+covid-19,country_region=Reunion confirmed=45i,deaths=0i,lat=-21.1151,lon=55.5364,recovered=0i 1584796415000000000
+covid-19,country_region=US,state_province=Delaware confirmed=45i,deaths=0i,lat=39.3185,lon=-75.5071,recovered=0i 1584832398000000000
+covid-19,country_region=US,state_province=New\ Mexico confirmed=43i,deaths=0i,lat=34.8405,lon=-106.2485,recovered=0i 1584740583000000000
+covid-19,country_region=Uzbekistan confirmed=43i,deaths=0i,lat=41.3775,lon=64.5853,recovered=0i 1584825190000000000
+covid-19,country_region=US,state_province=Nebraska confirmed=38i,deaths=0i,lat=41.1254,lon=-98.2681,recovered=0i 1584812583000000000
+covid-19,country_region=Liechtenstein confirmed=37i,deaths=0i,lat=47.166,lon=9.5554,recovered=0i 1584794588000000000
+covid-19,country_region=US,state_province=Hawaii confirmed=37i,deaths=0i,lat=21.0943,lon=-157.4983,recovered=0i 1584758583000000000
+covid-19,country_region=US,state_province=Idaho confirmed=36i,deaths=0i,lat=44.2405,lon=-114.4788,recovered=0i 1584758583000000000
+covid-19,country_region=Martinique confirmed=32i,deaths=1i,lat=14.6415,lon=-61.0242,recovered=0i 1584699217000000000
+covid-19,country_region=United\ Kingdom,state_province=Channel\ Islands confirmed=32i,deaths=0i,lat=49.3723,lon=-2.3644,recovered=0i 1584825209000000000
+covid-19,country_region=US,state_province=Vermont confirmed=29i,deaths=2i,lat=44.0459,lon=-72.7107,recovered=0i 1584740583000000000
+covid-19,country_region=US,state_province=North\ Dakota confirmed=28i,deaths=0i,lat=47.5289,lon=-99.784,recovered=0i 1584832398000000000
+covid-19,country_region=Cameroon confirmed=27i,deaths=0i,lat=3.848,lon=11.5021,recovered=0i 1584794588000000000
+covid-19,country_region=Canada,state_province=Saskatchewan confirmed=26i,deaths=0i,lat=52.9399,lon=-106.4509,recovered=0i 1584758583000000000
+covid-19,country_region=Bangladesh confirmed=25i,deaths=2i,lat=23.685,lon=90.3563,recovered=3i 1584794588000000000
+covid-19,country_region=Afghanistan confirmed=24i,deaths=0i,lat=33.9391,lon=67.71,recovered=1i 1584715384000000000
+covid-19,country_region=Honduras confirmed=24i,deaths=0i,lat=15.2,lon=-86.2419,recovered=0i 1584713588000000000
+covid-19,country_region=Congo\ (Kinshasa) confirmed=23i,deaths=1i,lat=-4.0383,lon=21.7587,recovered=0i 1584794588000000000
+covid-19,country_region=US,state_province=Grand\ Princess confirmed=23i,deaths=0i,lat=37.6489,lon=-122.6655,recovered=0i 1584733383000000000
+covid-19,country_region=US,state_province=Wyoming confirmed=23i,deaths=0i,lat=42.756,lon=-107.3025,recovered=0i 1584819783000000000
+covid-19,country_region=Nigeria confirmed=22i,deaths=0i,lat=9.082,lon=8.6753,recovered=1i 1584803626000000000
+covid-19,country_region=Canada,state_province=Nova\ Scotia confirmed=21i,deaths=0i,lat=44.682,lon=-63.7443,recovered=0i 1584825210000000000
+covid-19,country_region=Cuba confirmed=21i,deaths=1i,lat=21.5218,lon=-77.7812,recovered=0i 1584756812000000000
+covid-19,country_region=US,state_province=Montana confirmed=21i,deaths=0i,lat=46.9219,lon=-110.4544,recovered=0i 1584812583000000000
+covid-19,country_region=US,state_province=Puerto\ Rico confirmed=21i,deaths=1i,lat=18.2208,lon=-66.5901,recovered=0i 1584819783000000000
+covid-19,country_region=Bolivia confirmed=19i,deaths=0i,lat=-16.2902,lon=-63.5887,recovered=0i 1584794588000000000
+covid-19,country_region=Ghana confirmed=19i,deaths=1i,lat=7.9465,lon=-1.0232,recovered=0i 1584832397000000000
+covid-19,country_region=Canada,state_province=Manitoba confirmed=18i,deaths=0i,lat=53.7609,lon=-98.8139,recovered=0i 1584812583000000000
+covid-19,country_region=China,state_province=Macau confirmed=18i,deaths=0i,lat=22.1667,lon=113.55,recovered=10i 1584828804000000000
+covid-19,country_region=China,state_province=Qinghai confirmed=18i,deaths=0i,lat=35.7452,lon=95.9956,recovered=18i 1583893094000000000
+covid-19,country_region=French\ Guiana confirmed=18i,deaths=0i,lat=3.9339,lon=-53.1258,recovered=6i 1584825210000000000
+covid-19,country_region=Paraguay confirmed=18i,deaths=1i,lat=-23.4425,lon=-58.4438,recovered=0i 1584794588000000000
+covid-19,country_region=Canada,state_province=New\ Brunswick confirmed=17i,deaths=0i,lat=46.5653,lon=-66.4619,recovered=0i 1584825210000000000
+covid-19,country_region=Guatemala confirmed=17i,deaths=1i,lat=15.7835,lon=-90.2308,recovered=0i 1584825194000000000
+covid-19,country_region=Rwanda confirmed=17i,deaths=0i,lat=-1.9403,lon=29.8739,recovered=0i 1584736983000000000
+covid-19,country_region=Australia,state_province=Tasmania confirmed=16i,deaths=0i,lat=-41.4545,lon=145.9707,recovered=3i 1584796415000000000
+covid-19,country_region=Jamaica confirmed=16i,deaths=1i,lat=18.1096,lon=-77.2975,recovered=2i 1584713591000000000
+covid-19,country_region=Togo confirmed=16i,deaths=0i,lat=8.6195,lon=0.8248,recovered=1i 1584812583000000000
+covid-19,country_region=France,state_province=French\ Polynesia confirmed=15i,deaths=0i,lat=-17.6797,lon=-149.4068,recovered=0i 1584794588000000000
+covid-19,country_region=US,state_province=Alaska confirmed=15i,deaths=0i,lat=61.3707,lon=-152.4044,recovered=0i 1584832398000000000
+covid-19,country_region=US,state_province=Guam confirmed=15i,deaths=0i,lat=13.4443,lon=144.7937,recovered=0i 1584812583000000000
+covid-19,country_region=Cote\ d'Ivoire confirmed=14i,deaths=0i,lat=7.54,lon=-5.5471,recovered=1i 1584794588000000000
+covid-19,country_region=Kyrgyzstan confirmed=14i,deaths=0i,lat=41.2044,lon=74.7661,recovered=0i 1584812583000000000
+covid-19,country_region=Mauritius confirmed=14i,deaths=1i,lat=-20.3484,lon=57.5522,recovered=0i 1584794588000000000
+covid-19,country_region=Montenegro confirmed=14i,deaths=0i,lat=42.7087,lon=19.3744,recovered=0i 1584736983000000000
+covid-19,country_region=US,state_province=South\ Dakota confirmed=14i,deaths=1i,lat=44.2998,lon=-99.4388,recovered=0i 1584672190000000000
+covid-19,country_region=Maldives confirmed=13i,deaths=0i,lat=3.2028,lon=73.2207,recovered=0i 1584296418000000000
+covid-19,country_region=Monaco confirmed=11i,deaths=0i,lat=43.7384,lon=7.4246,recovered=0i 1584796412000000000
+covid-19,country_region=Canada,state_province=Grand\ Princess confirmed=10i,deaths=0i,lat=37.6489,lon=-122.6655,recovered=0i 1584673998000000000
+covid-19,country_region=Mongolia confirmed=10i,deaths=0i,lat=46.8625,lon=103.8467,recovered=0i 1584794588000000000
+covid-19,country_region=United\ Kingdom,state_province=Gibraltar confirmed=10i,deaths=0i,lat=36.1408,lon=-5.3536,recovered=2i 1584648832000000000
+covid-19,country_region=Australia,state_province=Australian\ Capital\ Territory confirmed=9i,deaths=0i,lat=-35.4735,lon=149.0124,recovered=0i 1584796415000000000
+covid-19,country_region=Ethiopia confirmed=9i,deaths=0i,lat=9.145,lon=40.4897,recovered=0i 1584713591000000000
+covid-19,country_region=US,state_province=West\ Virginia confirmed=8i,deaths=0i,lat=38.4912,lon=-80.9545,recovered=0i 1584758583000000000
+covid-19,country_region=Guyana confirmed=7i,deaths=1i,lat=4.8604,lon=-58.9302,recovered=0i 1584442383000000000
+covid-19,country_region=Kenya confirmed=7i,deaths=0i,lat=-0.0236,lon=37.9062,recovered=0i 1584585188000000000
+covid-19,country_region=Mayotte confirmed=7i,deaths=0i,lat=-12.8275,lon=45.1662,recovered=0i 1584796415000000000
+covid-19,country_region=Seychelles confirmed=7i,deaths=0i,lat=-4.6796,lon=55.492,recovered=0i 1584719004000000000
+covid-19,country_region=Barbados confirmed=6i,deaths=0i,lat=13.1939,lon=-59.5432,recovered=0i 1584758583000000000
+covid-19,country_region=Canada,state_province=Newfoundland\ and\ Labrador confirmed=6i,deaths=0i,lat=53.1355,lon=-57.6604,recovered=0i 1584825209000000000
+covid-19,country_region=Equatorial\ Guinea confirmed=6i,deaths=0i,lat=1.6508,lon=10.2679,recovered=0i 1584650583000000000
+covid-19,country_region=Tanzania confirmed=6i,deaths=0i,lat=-6.369,lon=34.8888,recovered=0i 1584617616000000000
+covid-19,country_region=US,state_province=United\ States\ Virgin\ Islands confirmed=6i,deaths=0i,lat=18.3358,lon=-64.8963,recovered=0i 1584812583000000000
+covid-19,country_region=Netherlands,state_province=Aruba confirmed=5i,deaths=0i,lat=12.5211,lon=-69.9683,recovered=0i 1584672190000000000
+covid-19,country_region=Bahamas\,\ The confirmed=4i,deaths=0i,lat=25.0343,lon=-77.3963,recovered=0i 1584758583000000000
+covid-19,country_region=France,state_province=New\ Caledonia confirmed=4i,deaths=0i,lat=-20.9043,lon=165.618,recovered=0i 1584812583000000000
+covid-19,country_region=France,state_province=St\ Martin confirmed=4i,deaths=0i,lat=18.0708,lon=-63.0501,recovered=0i 1584610384000000000
+covid-19,country_region=Gabon confirmed=4i,deaths=1i,lat=-0.8037,lon=11.6094,recovered=0i 1584756812000000000
+covid-19,country_region=Suriname confirmed=4i,deaths=0i,lat=3.9193,lon=-56.0278,recovered=0i 1584715384000000000
+covid-19,country_region=Australia,state_province=Northern\ Territory confirmed=3i,deaths=0i,lat=-12.4634,lon=130.8456,recovered=0i 1584738809000000000
+covid-19,country_region=Cabo\ Verde confirmed=3i,deaths=0i,lat=16.5388,lon=-23.0418,recovered=0i 1584803626000000000
+covid-19,country_region=Central\ African\ Republic confirmed=3i,deaths=0i,lat=6.6111,lon=20.9394,recovered=0i 1584736983000000000
+covid-19,country_region=Congo\ (Brazzaville) confirmed=3i,deaths=0i,lat=-0.228,lon=15.8277,recovered=0i 1584648836000000000
+covid-19,country_region=El\ Salvador confirmed=3i,deaths=0i,lat=13.7942,lon=-88.8965,recovered=0i 1584794588000000000
+covid-19,country_region=France,state_province=Saint\ Barthelemy confirmed=3i,deaths=0i,lat=17.9,lon=-62.8333,recovered=0i 1584369525000000000
+covid-19,country_region=Liberia confirmed=3i,deaths=0i,lat=6.4281,lon=-9.4295,recovered=0i 1584794588000000000
+covid-19,country_region=Madagascar confirmed=3i,deaths=0i,lat=-18.7669,lon=46.8691,recovered=0i 1584742433000000000
+covid-19,country_region=Namibia confirmed=3i,deaths=0i,lat=-22.9576,lon=18.4904,recovered=0i 1584648832000000000
+covid-19,country_region=Netherlands,state_province=Curacao confirmed=3i,deaths=1i,lat=12.1696,lon=-68.99,recovered=0i 1584607983000000000
+covid-19,country_region=United\ Kingdom,state_province=Cayman\ Islands confirmed=3i,deaths=1i,lat=19.3133,lon=-81.2546,recovered=0i 1584648836000000000
+covid-19,country_region=Zimbabwe confirmed=3i,deaths=0i,lat=-19.0154,lon=29.1549,recovered=0i 1584794588000000000
+covid-19,country_region=Angola confirmed=2i,deaths=0i,lat=-11.2027,lon=17.8739,recovered=0i 1584801784000000000
+covid-19,country_region=Benin confirmed=2i,deaths=0i,lat=9.3077,lon=2.3158,recovered=0i 1584540836000000000
+covid-19,country_region=Bhutan confirmed=2i,deaths=0i,lat=27.5142,lon=90.4336,recovered=0i 1584713617000000000
+covid-19,country_region=Canada,state_province=Prince\ Edward\ Island confirmed=2i,deaths=0i,lat=46.5107,lon=-63.4168,recovered=0i 1584643383000000000
+covid-19,country_region=Denmark,state_province=Greenland confirmed=2i,deaths=0i,lat=71.7069,lon=-42.6043,recovered=0i 1584605599000000000
+covid-19,country_region=Guinea confirmed=2i,deaths=0i,lat=9.9456,lon=-9.6966,recovered=0i 1584756812000000000
+covid-19,country_region=Haiti confirmed=2i,deaths=0i,lat=18.9712,lon=-72.2852,recovered=0i 1584801784000000000
+covid-19,country_region=Kosovo confirmed=2i,deaths=0i,lat=42.6026,lon=20.903,recovered=0i 1584296419000000000
+covid-19,country_region=Mauritania confirmed=2i,deaths=0i,lat=21.0079,lon=-10.9408,recovered=0i 1584585188000000000
+covid-19,country_region=Nicaragua confirmed=2i,deaths=0i,lat=12.8654,lon=-85.2072,recovered=0i 1584756814000000000
+covid-19,country_region=Saint\ Lucia confirmed=2i,deaths=0i,lat=13.9094,lon=-60.9789,recovered=0i 1584419539000000000
+covid-19,country_region=Sudan confirmed=2i,deaths=1i,lat=12.8628,lon=30.2176,recovered=0i 1584533589000000000
+covid-19,country_region=United\ Kingdom,state_province=Bermuda confirmed=2i,deaths=0i,lat=32.3078,lon=-64.7505,recovered=0i 1584760394000000000
+covid-19,country_region=Zambia confirmed=2i,deaths=0i,lat=-13.1339,lon=27.8493,recovered=0i 1584582786000000000
+covid-19,country_region=Antigua\ and\ Barbuda confirmed=1i,deaths=0i,lat=17.0608,lon=-61.7964,recovered=0i 1584296419000000000
+covid-19,country_region=Canada,state_province=Northwest\ Territories confirmed=1i,deaths=0i,lat=64.8255,lon=-124.8457,recovered=0i 1584825210000000000
+covid-19,country_region=Cape\ Verde confirmed=1i,deaths=0i,lat=15.1111,lon=-23.6167,recovered=0i 1584834182000000000
+covid-19,country_region=Chad confirmed=1i,deaths=0i,lat=15.4542,lon=18.7322,recovered=0i 1584760394000000000
+covid-19,country_region=China,state_province=Tibet confirmed=1i,deaths=0i,lat=31.6927,lon=88.0924,recovered=1i 1583893094000000000
+covid-19,country_region=Djibouti confirmed=1i,deaths=0i,lat=11.8251,lon=42.5903,recovered=0i 1584629586000000000
+covid-19,country_region=East\ Timor confirmed=1i,deaths=0i,lat=-8.55,lon=125.56,recovered=0i 1584801784000000000
+covid-19,country_region=Eritrea confirmed=1i,deaths=0i,lat=15.1794,lon=39.7823,recovered=0i 1584825210000000000
+covid-19,country_region=Eswatini confirmed=1i,deaths=0i,lat=-26.5225,lon=31.4659,recovered=0i 1584254514000000000
+covid-19,country_region=Fiji confirmed=1i,deaths=0i,lat=-17.7134,lon=178.065,recovered=0i 1584629586000000000
+covid-19,country_region=Gambia\,\ The confirmed=1i,deaths=0i,lat=13.4432,lon=-15.3101,recovered=0i 1584540836000000000
+covid-19,country_region=Holy\ See confirmed=1i,deaths=0i,lat=41.9029,lon=12.4534,recovered=0i 1584138122000000000
+covid-19,country_region=Nepal confirmed=1i,deaths=0i,lat=28.3949,lon=84.124,recovered=1i 1584138123000000000
+covid-19,country_region=Netherlands,state_province=Sint\ Maarten confirmed=1i,deaths=0i,lat=18.0425,lon=-63.0548,recovered=0i 1584738810000000000
+covid-19,country_region=Niger confirmed=1i,deaths=0i,lat=17.6078,lon=8.0817,recovered=0i 1584670432000000000
+covid-19,country_region=Papua\ New\ Guinea confirmed=1i,deaths=0i,lat=-6.315,lon=143.9555,recovered=0i 1584834182000000000
+covid-19,country_region=Saint\ Vincent\ and\ the\ Grenadines confirmed=1i,deaths=0i,lat=12.9843,lon=-61.2872,recovered=0i 1584203583000000000
+covid-19,country_region=Somalia confirmed=1i,deaths=0i,lat=5.1521,lon=46.1996,recovered=0i 1584492783000000000
+covid-19,country_region=US,state_province=US confirmed=1i,deaths=0i,lat=37.0902,lon=-95.7129,recovered=171i 1584819783000000000
+covid-19,country_region=Uganda confirmed=1i,deaths=0i,lat=1,lon=32,recovered=0i 1584834182000000000
+covid-19,country_region=United\ Kingdom,state_province=Isle\ of\ Man confirmed=1i,deaths=0i,lat=54.2361,lon=-4.5481,recovered=0i 1584717201000000000
+covid-19,country_region=United\ Kingdom,state_province=Montserrat confirmed=1i,deaths=0i,lat=16.7425,lon=-62.1874,recovered=0i 1584532384000000000
+covid-19,country_region=Australia,state_province=From\ Diamond\ Princess confirmed=0i,deaths=0i,lat=35.4437,lon=139.638,recovered=0i 1584153184000000000
+covid-19,country_region=France,state_province=French\ Guiana confirmed=0i,deaths=0i,lat=4,lon=-53,recovered=0i 1584541995000000000
+covid-19,country_region=France,state_province=Guadeloupe confirmed=0i,deaths=0i,lat=16.25,lon=-61.5833,recovered=0i 1584541995000000000
+covid-19,country_region=France,state_province=Mayotte confirmed=0i,deaths=0i,lat=-12.8431,lon=45.1383,recovered=0i 1584541995000000000
+covid-19,country_region=France,state_province=Reunion confirmed=0i,deaths=0i,lat=-21.1351,lon=55.2471,recovered=0i 1584541995000000000
+covid-19,country_region=Greenland confirmed=0i,deaths=0i,lat=72,lon=-40,recovered=0i 1584610384000000000
+covid-19,country_region=Guam confirmed=0i,deaths=0i,lat=13.4443,lon=144.7937,recovered=0i 1584558873000000000
+covid-19,country_region=Guernsey confirmed=0i,deaths=0i,lat=49.45,lon=-2.58,recovered=0i 1584469983000000000
+covid-19,country_region=Jersey confirmed=0i,deaths=0i,lat=49.19,lon=-2.11,recovered=0i 1584469983000000000
+covid-19,country_region=Puerto\ Rico confirmed=0i,deaths=0i,lat=18.2,lon=-66.5,recovered=0i 1584461594000000000
+covid-19,country_region=Republic\ of\ the\ Congo confirmed=0i,deaths=0i,lat=-1.44,lon=15.556,recovered=0i 1584480783000000000
+covid-19,country_region=The\ Bahamas confirmed=0i,deaths=0i,lat=24.25,lon=-76,recovered=0i 1584620018000000000
+covid-19,country_region=The\ Gambia confirmed=0i,deaths=0i,lat=13.4667,lon=-16.6,recovered=0i 1584540836000000000
